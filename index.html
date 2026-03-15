@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Workspace</title>
+    <style>
+      :root {
+        --bg: #0d1117;
+        --surface: #161b22;
+        --surface-2: #1c2128;
+        --border: #30363d;
+        --border-hover: #58a6ff;
+        --ink: #e6edf3;
+        --muted: #8b949e;
+        --faint: #484f58;
+        --blue: #58a6ff;
+        --green: #3fb950;
+        --purple: #bc8cff;
+        --orange: #ffa657;
+        --pink: #f778ba;
+        --teal: #39d3bb;
+        --yellow: #e3b341;
+        --red: #f85149;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        min-height: 100vh;
+        line-height: 1.5;
+      }
+
+      /* ── Header ── */
+      header {
+        border-bottom: 1px solid var(--border);
+        padding: 28px 0 24px;
+        background: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
+      }
+
+      .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+      .header-inner {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .logo { display: flex; align-items: center; gap: 12px; }
+
+      .logo-icon {
+        width: 40px; height: 40px; border-radius: 10px;
+        background: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 20px; flex-shrink: 0;
+      }
+
+      h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
+      .tagline { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+      .badge {
+        background: var(--surface-2); border: 1px solid var(--border);
+        border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--muted);
+        display: flex; align-items: center; gap: 6px; white-space: nowrap;
+      }
+
+      .dot {
+        width: 7px; height: 7px; border-radius: 50%;
+        background: var(--green); box-shadow: 0 0 6px var(--green); flex-shrink: 0;
+      }
+
+      /* ── Main ── */
+      main { padding: 36px 0 64px; }
+
+      /* ── Tabs ── */
+      .tab-bar {
+        display: flex;
+        gap: 4px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 32px;
+      }
+
+      .tab-btn {
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 10px 16px;
+        margin-bottom: -1px;
+        transition: color 0.15s, border-color 0.15s;
+        letter-spacing: 0.01em;
+      }
+
+      .tab-btn:hover { color: var(--ink); }
+      .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+      .tab-panel { display: none; }
+      .tab-panel.active { display: block; }
+
+      /* ── Section label ── */
+      .section-label {
+        font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+        text-transform: uppercase; color: var(--faint);
+        margin-bottom: 12px; margin-top: 36px;
+      }
+      .section-label:first-child { margin-top: 0; }
+
+      /* ── Grid ── */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 12px;
+      }
+
+      /* ── Card ── */
+      .card {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 12px; padding: 20px;
+        transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+        position: relative; overflow: hidden;
+      }
+
+      .card::before {
+        content: ""; position: absolute; inset: 0; border-radius: 12px;
+        opacity: 0; transition: opacity 0.15s;
+        background: radial-gradient(
+          600px circle at var(--mx, 50%) var(--my, 50%),
+          rgba(88, 166, 255, 0.04), transparent 40%
+        );
+        pointer-events: none;
+      }
+
+      .card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+      .card:hover::before { opacity: 1; }
+
+      .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+
+      .card-icon {
+        width: 32px; height: 32px; border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 16px; flex-shrink: 0;
+      }
+
+      .card h2 { font-size: 15px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+
+      .card-desc { font-size: 12px; color: var(--muted); margin-bottom: 14px; line-height: 1.5; }
+
+      /* ── Link list ── */
+      .link-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+
+      .link-list li {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 7px 9px; border-radius: 7px; transition: background 0.12s;
+      }
+
+      .link-list li:hover { background: var(--surface-2); }
+      .link-list a { color: var(--blue); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.12s; }
+      .link-list a:hover { color: #a5d6ff; }
+
+      .tag {
+        font-size: 11px; color: var(--faint); background: var(--surface-2);
+        border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; white-space: nowrap;
+      }
+
+      /* ── System tab ── */
+      .profile-banner {
+        background: linear-gradient(135deg, rgba(88,166,255,0.08) 0%, rgba(188,140,255,0.08) 100%);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 32px;
+      }
+
+      .avatar {
+        width: 56px; height: 56px; border-radius: 14px;
+        background: linear-gradient(135deg, #58a6ff, #bc8cff);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 26px; flex-shrink: 0;
+      }
+
+      .profile-info { flex: 1; }
+      .profile-name { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
+      .profile-title { font-size: 12px; color: var(--blue); margin-top: 2px; font-weight: 500; }
+
+      .stats-row {
+        display: flex; gap: 24px; margin-top: 12px; flex-wrap: wrap;
+      }
+
+      .stat { text-align: center; }
+      .stat-val { font-size: 20px; font-weight: 700; color: var(--ink); }
+      .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+      .xp-bar-wrap {
+        margin-top: 10px;
+      }
+
+      .xp-bar-labels {
+        display: flex; justify-content: space-between;
+        font-size: 11px; color: var(--muted); margin-bottom: 4px;
+      }
+
+      .xp-bar {
+        height: 6px; background: var(--surface-2); border-radius: 99px; overflow: hidden;
+      }
+
+      .xp-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #58a6ff, #bc8cff);
+        border-radius: 99px;
+        transition: width 0.4s ease;
+      }
+
+      .quest-list { display: flex; flex-direction: column; gap: 10px; }
+
+      .quest-item {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 10px; padding: 14px 16px;
+        display: flex; align-items: center; gap: 14px;
+        transition: border-color 0.15s;
+      }
+
+      .quest-item:hover { border-color: var(--border-hover); }
+
+      .quest-icon {
+        width: 36px; height: 36px; border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; flex-shrink: 0;
+      }
+
+      .quest-body { flex: 1; }
+      .quest-title { font-size: 13px; font-weight: 600; color: var(--ink); }
+      .quest-desc  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+      .quest-reward {
+        font-size: 12px; font-weight: 600; color: var(--yellow);
+        white-space: nowrap; display: flex; align-items: center; gap: 4px;
+      }
+
+      .quest-status {
+        font-size: 11px; padding: 2px 8px; border-radius: 99px; font-weight: 500;
+        white-space: nowrap;
+      }
+
+      .status-active   { background: rgba(88,166,255,0.12); color: var(--blue); }
+      .status-done     { background: rgba(63,185,80,0.12);  color: var(--green); }
+      .status-locked   { background: rgba(72,79,88,0.3);    color: var(--faint); }
+
+      .log-list { display: flex; flex-direction: column; gap: 6px; }
+
+      .log-item {
+        display: flex; align-items: center; gap: 10px;
+        font-size: 12px; color: var(--muted);
+        padding: 6px 0; border-bottom: 1px solid var(--border);
+      }
+
+      .log-item:last-child { border-bottom: none; }
+      .log-pts { color: var(--yellow); font-weight: 600; margin-left: auto; white-space: nowrap; }
+
+      /* ── Icon colours ── */
+      .ic-blue   { background: rgba(88,166,255,0.12); }
+      .ic-purple { background: rgba(188,140,255,0.12); }
+      .ic-green  { background: rgba(63,185,80,0.12); }
+      .ic-orange { background: rgba(255,166,87,0.12); }
+      .ic-pink   { background: rgba(247,120,186,0.12); }
+      .ic-teal   { background: rgba(57,211,187,0.12); }
+      .ic-yellow { background: rgba(227,179,65,0.12); }
+      .ic-red    { background: rgba(248,81,73,0.12); }
+
+      /* ── Footer ── */
+      footer { border-top: 1px solid var(--border); padding: 20px 0; margin-top: 12px; }
+
+      .footer-inner {
+        display: flex; align-items: center; justify-content: space-between;
+        flex-wrap: wrap; gap: 10px;
+      }
+
+      .footer-inner p { font-size: 12px; color: var(--muted); }
+
+      .footer-inner code {
+        font-family: "Cascadia Code", "Fira Code", Consolas, monospace;
+        font-size: 11.5px; background: var(--surface-2); border: 1px solid var(--border);
+        border-radius: 4px; padding: 1px 6px; color: var(--orange);
+      }
+
+      @media (max-width: 600px) {
+        .grid { grid-template-columns: 1fr; }
+        .header-inner { flex-direction: column; align-items: flex-start; }
+        .tab-btn { padding: 8px 10px; font-size: 12px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <div class="header-inner">
+          <div class="logo">
+            <div class="logo-icon">🚀</div>
+            <div>
+              <h1>My Workspace</h1>
+              <div class="tagline">Workspace · nginx gateway on :80</div>
+            </div>
+          </div>
+          <div class="badge">
+            <span class="dot"></span>
+            All services up
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap">
+        <nav class="tab-bar">
+          <button class="tab-btn active" data-tab="focus">Focus</button>
+          <button class="tab-btn" data-tab="grow">Grow</button>
+          <button class="tab-btn" data-tab="maintain">Maintain</button>
+          <button class="tab-btn" data-tab="learn">Learn</button>
+          <button class="tab-btn" data-tab="system">⚔ System</button>
+        </nav>
+
+        <!-- ══ FOCUS ══ -->
+        <div class="tab-panel active" id="tab-focus">
+          <p class="section-label">My Products</p>
+          <div class="grid">
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-blue">📈</div>
+                <h2>Max Engine V2</h2>
+              </div>
+              <p class="card-desc">Công cụ trading cá nhân — detect trend, validate với intermarket signals (bond yield, sector rotation), sentiment scoring. Vào lệnh → monitor timeout.</p>
+              <ul class="link-list">
+                <li><a href="http://trading.localhost">trading.localhost</a><span class="tag">Trading · AI Signals</span></li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-purple">📚</div>
+                <h2>Dreamer House</h2>
+              </div>
+              <p class="card-desc">Story platform với ML recommendations — collaborative filtering, content-based filtering. Target Vietnamese readers.</p>
+              <ul class="link-list">
+                <li><a href="http://dreamer.localhost">dreamer.localhost</a><span class="tag">Story Platform · Monetize</span></li>
+              </ul>
+            </article>
+          </div>
+
+          <p class="section-label">Key Resources</p>
+          <div class="grid">
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-green">🤖</div>
+                <h2>Agentic AI</h2>
+              </div>
+              <p class="card-desc">RAG research assistant — query macro/intermarket knowledge base để bổ trợ trading decisions và research.</p>
+              <ul class="link-list">
+                <li><a href="http://agentic.localhost">agentic.localhost</a><span class="tag">Research · RAG</span></li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-blue">🗄️</div>
+                <h2>Data Stores</h2>
+              </div>
+              <p class="card-desc">PostgreSQL &amp; Redis — market data, signals, user data cho tất cả products.</p>
+              <ul class="link-list">
+                <li><span style="font-size:13px;font-weight:500;color:var(--muted)">PostgreSQL</span><span class="tag">localhost:5432</span></li>
+                <li><span style="font-size:13px;font-weight:500;color:var(--muted)">Redis</span><span class="tag">localhost:6379</span></li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-blue">🐙</div>
+                <h2>GitHub</h2>
+              </div>
+              <p class="card-desc">Source code, CI/CD qua GHCR — tất cả repos và Actions pipelines.</p>
+              <ul class="link-list">
+                <li><a href="https://github.com/cyborgx0x" target="_blank" rel="noopener noreferrer">github.com/cyborgx0x</a><span class="tag">Source · CI/CD</span></li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <!-- ══ GROW ══ -->
+        <div class="tab-panel" id="tab-grow">
+          <p class="section-label">Channels</p>
+          <div class="grid">
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-blue">𝕏</div>
+                <h2>X (Twitter)</h2>
+              </div>
+              <p class="card-desc">Premium account — short-form insights về trading, AI, tech. Primary channel để build audience và drive traffic.</p>
+              <ul class="link-list">
+                <li><a href="https://x.com" target="_blank" rel="noopener noreferrer">x.com</a><span class="tag">Short-form · Primary</span></li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-teal">🔷</div>
+                <h2>Hashnode</h2>
+              </div>
+              <p class="card-desc">Technical blog — deep-dive AI, trading systems, engineering. SEO organic traffic, dev community distribution.</p>
+              <ul class="link-list">
+                <li><a href="https://hashnode.com" target="_blank" rel="noopener noreferrer">hashnode.com</a><span class="tag">Tech Blog · SEO</span></li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-red">▶️</div>
+                <h2>YouTube — Lucas Media VN</h2>
+              </div>
+              <p class="card-desc">Video content — trading insights, AI demos, game lore. Long-form audience, AdSense revenue.</p>
+              <ul class="link-list">
+                <li><a href="https://www.youtube.com/@lucasmediavn" target="_blank" rel="noopener noreferrer">youtube.com/@lucasmediavn</a><span class="tag">Video · AdSense</span></li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-teal">🔬</div>
+                <h2>Research Blog</h2>
+              </div>
+              <p class="card-desc">Self-hosted — AI research, Politic Radar, Corruption Archive. Mirror sang Hashnode để tăng reach.</p>
+              <ul class="link-list">
+                <li><a href="http://research.localhost">research.localhost</a><span class="tag">Self-hosted · Mirror</span></li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-green">📅</div>
+                <h2>Buffer</h2>
+              </div>
+              <p class="card-desc">Schedule &amp; cross-post từ X sang các kênh khác — consistent posting không cần thủ công mỗi ngày.</p>
+              <ul class="link-list">
+                <li><a href="https://buffer.com" target="_blank" rel="noopener noreferrer">buffer.com</a><span class="tag">Scheduling · Cross-post</span></li>
+              </ul>
+            </article>
+          </div>
+
+          <p class="section-label">Creative IP</p>
+          <div class="grid">
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-purple">🎮</div>
+                <h2>Legacy of Lucas</h2>
+              </div>
+              <p class="card-desc">Colony strategy game — original IP. Content về game feeds YouTube, lore feeds wiki.</p>
+              <ul class="link-list">
+                <li><a href="http://legacy.localhost">legacy.localhost</a><span class="tag">Game · IP</span></li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-yellow">🗺️</div>
+                <h2>Lucas Lore</h2>
+              </div>
+              <p class="card-desc">Lore wiki — fan engagement, cross-promote game và YouTube.</p>
+              <ul class="link-list">
+                <li><a href="http://lucas-lore.localhost">lucas-lore.localhost</a><span class="tag">Wiki · Engagement</span></li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <!-- ══ MAINTAIN ══ -->
+        <div class="tab-panel" id="tab-maintain">
+          <p class="section-label">Boss Projects — Keep Running</p>
+          <div class="grid">
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-orange">🏪</div>
+                <h2>Bahang Xom</h2>
+              </div>
+              <p class="card-desc">Social listening &amp; brand analysis — sentiment scoring, crisis alerts.</p>
+              <ul class="link-list">
+                <li><a href="http://bahangxom.localhost">bahangxom.localhost</a><span class="tag">Social Listening</span></li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-teal">🔍</div>
+                <h2>OCR Portal</h2>
+              </div>
+              <p class="card-desc">Document OCR — EasyOCR async, MinIO storage.</p>
+              <ul class="link-list">
+                <li><a href="http://ocr.localhost">ocr.localhost</a><span class="tag">OCR · UI</span></li>
+                <li><a href="http://ocr-api.localhost">ocr-api.localhost</a><span class="tag">OCR · API</span></li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-yellow">📖</div>
+                <h2>Novel Pipeline</h2>
+              </div>
+              <p class="card-desc">Crawl → LLM translate → EPUB/MOBI. Bronze/silver/gold pipeline.</p>
+              <ul class="link-list">
+                <li><a href="http://ebook.localhost">ebook.localhost</a><span class="tag">Novel · eBook</span></li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-pink">🔐</div>
+                <h2>Quarks</h2>
+              </div>
+              <p class="card-desc">Security scanning — Nuclei scanner, target management, vulnerability results.</p>
+              <ul class="link-list">
+                <li><a href="http://quarks.localhost">quarks.localhost</a><span class="tag">Security Scanning</span></li>
+                <li><a href="https://cloud.projectdiscovery.io/" target="_blank" rel="noopener noreferrer">cloud.projectdiscovery.io</a><span class="tag">Cloud Results</span></li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-blue">✈️</div>
+                <h2>Laura Bot</h2>
+              </div>
+              <p class="card-desc">Telegram webhook router — FSM conversations, subscription management.</p>
+              <ul class="link-list">
+                <li><a href="http://laura.localhost">laura.localhost</a><span class="tag">Telegram Bot</span></li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-yellow">🪣</div>
+                <h2>Object Storage</h2>
+              </div>
+              <p class="card-desc">MinIO S3-compatible — file storage cho OCR portal.</p>
+              <ul class="link-list">
+                <li><a href="http://ocr-minio.localhost">ocr-minio.localhost</a><span class="tag">MinIO Console</span></li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <!-- ══ LEARN ══ -->
+        <div class="tab-panel" id="tab-learn">
+          <p class="section-label">Certifications</p>
+          <div class="grid">
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-purple">🎓</div>
+                <h2>Coursera</h2>
+              </div>
+              <p class="card-desc">Generative AI Engineer cert — đang học. Apply trực tiếp vào Max Engine signal generation và Dreamer House ML.</p>
+              <ul class="link-list">
+                <li><a href="https://www.coursera.org" target="_blank" rel="noopener noreferrer">coursera.org</a><span class="tag">Gen AI Engineer</span></li>
+              </ul>
+            </article>
+          </div>
+
+          <p class="section-label">Language</p>
+          <div class="grid">
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-green">🌱</div>
+                <h2>Duolingo</h2>
+              </div>
+              <p class="card-desc">Tiếng Trung — gamified daily practice, spaced repetition.</p>
+              <ul class="link-list">
+                <li><a href="https://www.duolingo.com" target="_blank" rel="noopener noreferrer">duolingo.com</a><span class="tag">Chinese · Daily</span></li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-blue">🃏</div>
+                <h2>Anki</h2>
+              </div>
+              <p class="card-desc">SRS flashcards — vocabulary drill, deck tiếng Trung cộng đồng có TTS.</p>
+              <ul class="link-list">
+                <li><a href="https://apps.ankiweb.net" target="_blank" rel="noopener noreferrer">apps.ankiweb.net</a><span class="tag">Flashcards · SRS</span></li>
+              </ul>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-orange">📖</div>
+                <h2>Pleco</h2>
+              </div>
+              <p class="card-desc">Từ điển Trung-Anh — tra chữ Hán, OCR scan, flashcard tích hợp.</p>
+              <ul class="link-list">
+                <li><a href="https://www.pleco.com" target="_blank" rel="noopener noreferrer">pleco.com</a><span class="tag">Dictionary · OCR</span></li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <!-- ══ SYSTEM ══ -->
+        <div class="tab-panel" id="tab-system">
+
+          <!-- Player Profile -->
+          <div class="profile-banner">
+            <div class="avatar">🧑‍💻</div>
+            <div class="profile-info">
+              <div class="profile-name">cyborgx0x</div>
+              <div class="profile-title">▸ Generative AI Engineer · Lv.12</div>
+              <div class="stats-row">
+                <div class="stat"><div class="stat-val">248</div><div class="stat-label">Points</div></div>
+                <div class="stat"><div class="stat-val">12</div><div class="stat-label">Level</div></div>
+                <div class="stat"><div class="stat-val">7</div><div class="stat-label">Streak</div></div>
+                <div class="stat"><div class="stat-val">3</div><div class="stat-label">Done today</div></div>
+              </div>
+              <div class="xp-bar-wrap">
+                <div class="xp-bar-labels"><span>XP 248 / 300</span><span>Lv.13</span></div>
+                <div class="xp-bar"><div class="xp-bar-fill" style="width:82%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Quests -->
+          <p class="section-label">Active Quests</p>
+          <div class="quest-list">
+            <div class="quest-item">
+              <div class="quest-icon ic-blue">📖</div>
+              <div class="quest-body">
+                <div class="quest-title">Học tiếng Anh 10 phút</div>
+                <div class="quest-desc">Duolingo hoặc bất kỳ nguồn nào · mỗi ngày</div>
+              </div>
+              <span class="quest-reward">+1 pt</span>
+              <span class="quest-status status-active">Active</span>
+            </div>
+
+            <div class="quest-item">
+              <div class="quest-icon ic-purple">🎓</div>
+              <div class="quest-body">
+                <div class="quest-title">Hoàn thành 1 bài học Coursera</div>
+                <div class="quest-desc">Gen AI Engineer cert · mỗi ngày</div>
+              </div>
+              <span class="quest-reward">+5 pt</span>
+              <span class="quest-status status-active">Active</span>
+            </div>
+
+            <div class="quest-item">
+              <div class="quest-icon ic-green">🚀</div>
+              <div class="quest-body">
+                <div class="quest-title">Deploy 1 tính năng mới</div>
+                <div class="quest-desc">Bất kỳ project nào trong workspace</div>
+              </div>
+              <span class="quest-reward">+10 pt</span>
+              <span class="quest-status status-active">Active</span>
+            </div>
+
+            <div class="quest-item">
+              <div class="quest-icon ic-yellow">📝</div>
+              <div class="quest-body">
+                <div class="quest-title">Viết 1 blog post hoặc research note</div>
+                <div class="quest-desc">Publish lên Research Blog</div>
+              </div>
+              <span class="quest-reward">+8 pt</span>
+              <span class="quest-status status-locked">Locked</span>
+            </div>
+
+            <div class="quest-item">
+              <div class="quest-icon ic-orange">💪</div>
+              <div class="quest-body">
+                <div class="quest-title">Tập thể dục 20 phút</div>
+                <div class="quest-desc">Bất kỳ hoạt động thể chất nào</div>
+              </div>
+              <span class="quest-reward">+2 pt</span>
+              <span class="quest-status status-done">Done ✓</span>
+            </div>
+          </div>
+
+          <!-- Reward Log -->
+          <p class="section-label">Recent Rewards</p>
+          <div class="log-list">
+            <div class="log-item"><span>💪</span><span>Tập thể dục 20 phút</span><span class="log-pts">+2 pt</span></div>
+            <div class="log-item"><span>🎓</span><span>Coursera · Lesson: Prompt Engineering</span><span class="log-pts">+5 pt</span></div>
+            <div class="log-item"><span>📖</span><span>Duolingo 10 phút</span><span class="log-pts">+1 pt</span></div>
+            <div class="log-item"><span>🚀</span><span>Deploy OCR Portal monorepo CI</span><span class="log-pts">+10 pt</span></div>
+            <div class="log-item"><span>📖</span><span>Duolingo 10 phút</span><span class="log-pts">+1 pt</span></div>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div class="footer-inner">
+          <p>Run <code>docker compose up -d</code> from <strong>E:/Projects</strong> to bring all services online.</p>
+          <p style="color:var(--faint)">All <code>*.localhost</code> domains → nginx-gateway :80</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Tab switching
+      const btns = document.querySelectorAll(".tab-btn");
+      const panels = document.querySelectorAll(".tab-panel");
+      btns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          btns.forEach((b) => b.classList.remove("active"));
+          panels.forEach((p) => p.classList.remove("active"));
+          btn.classList.add("active");
+          document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+        });
+      });
+
+      // Mouse-tracking glow on cards
+      document.querySelectorAll(".card").forEach((card) => {
+        card.addEventListener("mousemove", (e) => {
+          const r = card.getBoundingClientRect();
+          card.style.setProperty("--mx", ((e.clientX - r.left) / r.width) * 100 + "%");
+          card.style.setProperty("--my", ((e.clientY - r.top) / r.height) * 100 + "%");
+        });
+      });
+    </script>
+  </body>
+</html>
