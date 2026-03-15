@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tools Index</title>
+    <style>
+      :root {
+        --bg: #f7f4ee;
+        --ink: #1f2a2e;
+        --muted: #5e6b6f;
+        --card: #fff;
+        --line: #d7d1c5;
+        --accent: #0f766e;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+      }
+      .wrap {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px 20px 60px;
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-size: 32px;
+      }
+      .sub {
+        color: var(--muted);
+        margin-bottom: 24px;
+        font-size: 14px;
+      }
+      .tool {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 16px;
+      }
+      .tool h2 {
+        margin: 0 0 4px;
+        font-size: 18px;
+      }
+      .tool .desc {
+        color: var(--muted);
+        font-size: 13px;
+        margin: 0 0 10px;
+      }
+      .tool details {
+        font-size: 14px;
+        line-height: 1.7;
+      }
+      .tool details pre {
+        background: #f1efe9;
+        padding: 12px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-size: 13px;
+      }
+      .tool details code {
+        background: #f1efe9;
+        padding: 2px 5px;
+        border-radius: 4px;
+        font-size: 13px;
+      }
+      summary {
+        cursor: pointer;
+        color: var(--accent);
+        font-weight: 600;
+        font-size: 14px;
+      }
+      a {
+        color: var(--accent);
+      }
+      .back {
+        display: inline-block;
+        margin-bottom: 16px;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <a class="back" href="/">&larr; Dashboard</a>
+      <h1>Tools &amp; Utilities</h1>
+      <p class="sub">
+        CLI tools, MCP servers, and misc utilities. README rendered inline.
+      </p>
+
+      <div class="tool">
+        <h2>MCP MetaTrader 5</h2>
+        <p class="desc">
+          MCP server kết nối MetaTrader 5 để tự động hóa trading journal.
+        </p>
+        <details>
+          <summary>README.md</summary>
+          <div id="readme-mcp-metatrader"></div>
+        </details>
+      </div>
+
+      <div class="tool">
+        <h2>Max Engine V1 (Legacy)</h2>
+        <p class="desc">
+          Quantitative Trading Analysis Platform — Flask + Celery + PostgreSQL.
+        </p>
+        <details>
+          <summary>README.md</summary>
+          <div id="readme-max-engine-v1"></div>
+        </details>
+      </div>
+
+      <div class="tool">
+        <h2>SecBox</h2>
+        <p class="desc">Docker Compose security tools collection.</p>
+        <details>
+          <summary>README.md</summary>
+          <div id="readme-secbox"></div>
+        </details>
+      </div>
+
+      <div class="tool">
+        <h2>TikTok Bulk Create</h2>
+        <p class="desc">TikTok bulk content creator.</p>
+        <details>
+          <summary>README.md</summary>
+          <div id="readme-tiktok-bulk-create"></div>
+        </details>
+      </div>
+
+      <div class="tool">
+        <h2>Zalo / Social Bot</h2>
+        <p class="desc">Social media bot integration.</p>
+        <details>
+          <summary>README.md</summary>
+          <div id="readme-zalo"></div>
+        </details>
+      </div>
+
+      <div class="tool">
+        <h2>Airodump-ng GUI</h2>
+        <p class="desc">Python GUI for airodump-ng.</p>
+        <details>
+          <summary>README.md</summary>
+          <div id="readme-airodump-ng-GUI"></div>
+        </details>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+    <script>
+      const tools = [
+        "mcp-metatrader",
+        "max-engine-v1",
+        "secbox",
+        "tiktok-bulk-create",
+        "zalo",
+        "airodump-ng-GUI",
+      ];
+      tools.forEach((name) => {
+        const el = document.getElementById("readme-" + name);
+        if (!el) return;
+        const details = el.closest("details");
+        details.addEventListener("toggle", async function handler() {
+          if (!details.open || el.dataset.loaded) return;
+          el.dataset.loaded = "1";
+          try {
+            const resp = await fetch("/tools-readme/" + name + "/README.md");
+            if (!resp.ok) {
+              el.textContent = "README not found";
+              return;
+            }
+            const md = await resp.text();
+            el.innerHTML = DOMPurify.sanitize(marked.parse(md));
+          } catch (e) {
+            el.textContent = "Failed to load README";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
