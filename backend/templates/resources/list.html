@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ resource_model }}</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: #0d1117;
+        color: #e6edf3;
+      }
+      .wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      a {
+        color: #58a6ff;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #161b22;
+        border: 1px solid #30363d;
+      }
+      th,
+      td {
+        border: 1px solid #30363d;
+        padding: 8px;
+        text-align: left;
+        vertical-align: top;
+        font-size: 13px;
+      }
+      th {
+        background: #1c2128;
+      }
+      .actions {
+        margin-bottom: 12px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .btn {
+        display: inline-block;
+        padding: 7px 12px;
+        border-radius: 8px;
+        border: 1px solid #30363d;
+        text-decoration: none;
+        background: #1c2128;
+        color: #e6edf3;
+      }
+      .btn:hover {
+        border-color: #58a6ff;
+      }
+    </style>
+  </head>
+  <body>
+    {% load resource_extras %}
+    <div class="wrap">
+      <p><a href="/">Back dashboard</a></p>
+      <h1>{{ resource_model }}</h1>
+      <div class="actions">
+        <a class="btn" href="/resources/{{ resource_name }}/create/"
+          >Create new</a
+        >
+        <a class="btn" href="{{ api_path }}">Open API</a>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            {% for column in columns %}
+            <th>{{ column }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          <tr>
+            {% for column in columns %}
+            <td>{{ row|attr:column }}</td>
+            {% endfor %}
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="{{ columns|length }}">No data yet.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

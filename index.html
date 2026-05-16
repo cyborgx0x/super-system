@@ -24,7 +24,11 @@
         --red: #f85149;
       }
 
-      * { box-sizing: border-box; margin: 0; padding: 0; }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
       body {
         font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
@@ -34,14 +38,17 @@
         line-height: 1.5;
       }
 
-      /* ── Header ── */
       header {
         border-bottom: 1px solid var(--border);
         padding: 28px 0 24px;
         background: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
       }
 
-      .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+      .wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
 
       .header-inner {
         display: flex;
@@ -51,35 +58,65 @@
         gap: 16px;
       }
 
-      .logo { display: flex; align-items: center; gap: 12px; }
-
-      .logo-icon {
-        width: 40px; height: 40px; border-radius: 10px;
-        background: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
-        display: flex; align-items: center; justify-content: center;
-        font-size: 20px; flex-shrink: 0;
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
       }
 
-      h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
-      .tagline { font-size: 13px; color: var(--muted); margin-top: 2px; }
+      .logo-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+
+      h1 {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+      }
+      .tagline {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
 
       .badge {
-        background: var(--surface-2); border: 1px solid var(--border);
-        border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--muted);
-        display: flex; align-items: center; gap: 6px; white-space: nowrap;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 5px 12px;
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
       }
 
       .dot {
-        width: 7px; height: 7px; border-radius: 50%;
-        background: var(--green); box-shadow: 0 0 6px var(--green); flex-shrink: 0;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 6px var(--green);
+        flex-shrink: 0;
       }
 
-      /* ── Main ── */
-      main { padding: 36px 0 64px; }
+      main {
+        padding: 36px 0 64px;
+      }
 
-      /* ── Tabs ── */
       .tab-bar {
         display: flex;
+        flex-wrap: wrap;
         gap: 4px;
         border-bottom: 1px solid var(--border);
         margin-bottom: 32px;
@@ -99,80 +136,518 @@
         letter-spacing: 0.01em;
       }
 
-      .tab-btn:hover { color: var(--ink); }
-      .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
-
-      .tab-panel { display: none; }
-      .tab-panel.active { display: block; }
-
-      /* ── Section label ── */
-      .section-label {
-        font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
-        text-transform: uppercase; color: var(--faint);
-        margin-bottom: 12px; margin-top: 36px;
+      .tab-btn:hover {
+        color: var(--ink);
       }
-      .section-label:first-child { margin-top: 0; }
+      .tab-btn.active {
+        color: var(--blue);
+        border-bottom-color: var(--blue);
+      }
 
-      /* ── Grid ── */
+      .tab-panel {
+        display: none;
+      }
+      .tab-panel.active {
+        display: block;
+      }
+
+      .section-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--faint);
+        margin-bottom: 12px;
+        margin-top: 36px;
+      }
+      .section-label:first-child {
+        margin-top: 0;
+      }
+
       .grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 12px;
       }
 
-      /* ── Card ── */
       .card {
-        background: var(--surface); border: 1px solid var(--border);
-        border-radius: 12px; padding: 20px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px;
         transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
-        position: relative; overflow: hidden;
+        position: relative;
+        overflow: hidden;
       }
 
       .card::before {
-        content: ""; position: absolute; inset: 0; border-radius: 12px;
-        opacity: 0; transition: opacity 0.15s;
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 12px;
+        opacity: 0;
+        transition: opacity 0.15s;
         background: radial-gradient(
           600px circle at var(--mx, 50%) var(--my, 50%),
-          rgba(88, 166, 255, 0.04), transparent 40%
+          rgba(88, 166, 255, 0.04),
+          transparent 40%
         );
         pointer-events: none;
       }
 
-      .card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
-      .card:hover::before { opacity: 1; }
+      .card:hover {
+        border-color: var(--border-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      }
+      .card:hover::before {
+        opacity: 1;
+      }
 
-      .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+      .card-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
 
       .card-icon {
-        width: 32px; height: 32px; border-radius: 8px;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 16px; flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
       }
 
-      .card h2 { font-size: 15px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+      .card h2 {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--ink);
+        letter-spacing: -0.01em;
+      }
 
-      .card-desc { font-size: 12px; color: var(--muted); margin-bottom: 14px; line-height: 1.5; }
+      .card-desc {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 14px;
+        line-height: 1.5;
+      }
 
-      /* ── Link list ── */
-      .link-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+      .link-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
 
       .link-list li {
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 7px 9px; border-radius: 7px; transition: background 0.12s;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 7px 9px;
+        border-radius: 7px;
+        transition: background 0.12s;
       }
 
-      .link-list li:hover { background: var(--surface-2); }
-      .link-list a { color: var(--blue); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.12s; }
-      .link-list a:hover { color: #a5d6ff; }
+      .link-list li:hover {
+        background: var(--surface-2);
+      }
+      .link-list a {
+        color: var(--blue);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        transition: color 0.12s;
+      }
+      .link-list a:hover {
+        color: #a5d6ff;
+      }
 
       .tag {
-        font-size: 11px; color: var(--faint); background: var(--surface-2);
-        border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; white-space: nowrap;
+        font-size: 11px;
+        color: var(--faint);
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 1px 6px;
+        white-space: nowrap;
       }
 
-      /* ── System tab ── */
+      .goal-header {
+        background: linear-gradient(
+          135deg,
+          rgba(88, 166, 255, 0.12) 0%,
+          rgba(57, 211, 187, 0.08) 100%
+        );
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px 18px;
+        margin-bottom: 18px;
+      }
+
+      .goal-title {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+
+      .goal-sub {
+        margin-top: 4px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .mission-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .mission {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+      }
+
+      .mission-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+
+      .mission-name {
+        font-size: 14px;
+        font-weight: 650;
+        letter-spacing: -0.01em;
+      }
+
+      .mission-meta {
+        font-size: 11px;
+        color: var(--muted);
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .mission-progress {
+        margin-bottom: 10px;
+      }
+
+      .mission-progress-label {
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 5px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .progress-bar {
+        height: 6px;
+        background: var(--surface-2);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, var(--blue), var(--teal));
+        transition: width 0.2s ease;
+      }
+
+      .mission-steps {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .mission-step {
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px;
+      }
+
+      .mission-step.locked {
+        border-color: rgba(248, 81, 73, 0.45);
+        background: rgba(248, 81, 73, 0.08);
+      }
+
+      .mission-step.locked .step-title::after {
+        content: " · Access required";
+        color: var(--red);
+        font-size: 11px;
+        font-weight: 500;
+      }
+
+      .step-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .step-title {
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .step-hint {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      .step-links {
+        margin-top: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .quick-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 4px 9px;
+        text-decoration: none;
+        font-size: 11px;
+        color: var(--blue);
+        background: rgba(88, 166, 255, 0.08);
+      }
+
+      .quick-link:hover {
+        border-color: var(--border-hover);
+      }
+
+      .goal-summary {
+        margin-top: 14px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .access-panel {
+        background: linear-gradient(
+          135deg,
+          rgba(88, 166, 255, 0.1) 0%,
+          rgba(63, 185, 80, 0.08) 100%
+        );
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 20px;
+      }
+
+      .access-note {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 12px;
+      }
+
+      .access-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 10px;
+      }
+
+      .access-item {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px;
+      }
+
+      .settings-shell {
+        display: grid;
+        grid-template-columns: 1.25fr 0.75fr;
+        gap: 14px;
+      }
+
+      .settings-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+      }
+
+      .settings-title {
+        font-size: 14px;
+        font-weight: 650;
+        margin-bottom: 6px;
+      }
+
+      .settings-note {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 12px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(220px, 1fr));
+        gap: 10px;
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .field.full {
+        grid-column: 1 / -1;
+      }
+
+      .field label {
+        font-size: 11px;
+        color: var(--muted);
+        letter-spacing: 0.02em;
+      }
+
+      .field input {
+        height: 34px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--surface-2);
+        color: var(--ink);
+        padding: 0 10px;
+        font-size: 12px;
+      }
+
+      .field input:focus {
+        outline: none;
+        border-color: var(--blue);
+      }
+
+      .actions-row {
+        margin-top: 12px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        border: 1px solid var(--border);
+        background: var(--surface-2);
+        color: var(--ink);
+        border-radius: 8px;
+        height: 34px;
+        padding: 0 12px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        border-color: var(--border-hover);
+      }
+      .btn.primary {
+        background: rgba(88, 166, 255, 0.18);
+        color: #c8e1ff;
+        border-color: rgba(88, 166, 255, 0.55);
+      }
+
+      .btn.danger {
+        background: rgba(248, 81, 73, 0.15);
+        color: #ffb8b3;
+        border-color: rgba(248, 81, 73, 0.55);
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--surface-2);
+        color: var(--muted);
+        padding: 4px 10px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .status-pill.connected {
+        color: #9de5a6;
+        border-color: rgba(63, 185, 80, 0.55);
+        background: rgba(63, 185, 80, 0.14);
+      }
+
+      .mini-kv {
+        margin-top: 10px;
+        display: grid;
+        gap: 6px;
+      }
+
+      .mini-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 12px;
+      }
+
+      .mini-row .label {
+        color: var(--muted);
+      }
+      .mini-row .val {
+        color: var(--ink);
+        word-break: break-all;
+        text-align: right;
+      }
+
+      .settings-alert {
+        margin-top: 10px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .access-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .access-name {
+        font-size: 12px;
+        font-weight: 650;
+      }
+
+      .access-actions {
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .access-toggle {
+        font-size: 11px;
+        color: var(--muted);
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .access-time {
+        font-size: 10px;
+        color: var(--faint);
+      }
+
       .profile-banner {
-        background: linear-gradient(135deg, rgba(88,166,255,0.08) 0%, rgba(188,140,255,0.08) 100%);
+        background: linear-gradient(
+          135deg,
+          rgba(88, 166, 255, 0.08) 0%,
+          rgba(188, 140, 255, 0.08) 100%
+        );
         border: 1px solid var(--border);
         border-radius: 14px;
         padding: 24px;
@@ -183,35 +658,71 @@
       }
 
       .avatar {
-        width: 56px; height: 56px; border-radius: 14px;
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
         background: linear-gradient(135deg, #58a6ff, #bc8cff);
-        display: flex; align-items: center; justify-content: center;
-        font-size: 26px; flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        flex-shrink: 0;
       }
 
-      .profile-info { flex: 1; }
-      .profile-name { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
-      .profile-title { font-size: 12px; color: var(--blue); margin-top: 2px; font-weight: 500; }
+      .profile-info {
+        flex: 1;
+      }
+      .profile-name {
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .profile-title {
+        font-size: 12px;
+        color: var(--blue);
+        margin-top: 2px;
+        font-weight: 500;
+      }
 
       .stats-row {
-        display: flex; gap: 24px; margin-top: 12px; flex-wrap: wrap;
+        display: flex;
+        gap: 24px;
+        margin-top: 12px;
+        flex-wrap: wrap;
       }
 
-      .stat { text-align: center; }
-      .stat-val { font-size: 20px; font-weight: 700; color: var(--ink); }
-      .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+      .stat {
+        text-align: center;
+      }
+      .stat-val {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .stat-label {
+        font-size: 11px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
 
       .xp-bar-wrap {
         margin-top: 10px;
       }
 
       .xp-bar-labels {
-        display: flex; justify-content: space-between;
-        font-size: 11px; color: var(--muted); margin-bottom: 4px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 4px;
       }
 
       .xp-bar {
-        height: 6px; background: var(--surface-2); border-radius: 99px; overflow: hidden;
+        height: 6px;
+        background: var(--surface-2);
+        border-radius: 99px;
+        overflow: hidden;
       }
 
       .xp-bar-fill {
@@ -221,82 +732,192 @@
         transition: width 0.4s ease;
       }
 
-      .quest-list { display: flex; flex-direction: column; gap: 10px; }
+      .quest-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
 
       .quest-item {
-        background: var(--surface); border: 1px solid var(--border);
-        border-radius: 10px; padding: 14px 16px;
-        display: flex; align-items: center; gap: 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
         transition: border-color 0.15s;
       }
 
-      .quest-item:hover { border-color: var(--border-hover); }
-
-      .quest-icon {
-        width: 36px; height: 36px; border-radius: 8px;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 18px; flex-shrink: 0;
+      .quest-item:hover {
+        border-color: var(--border-hover);
       }
 
-      .quest-body { flex: 1; }
-      .quest-title { font-size: 13px; font-weight: 600; color: var(--ink); }
-      .quest-desc  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+      .quest-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+
+      .quest-body {
+        flex: 1;
+      }
+      .quest-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--ink);
+      }
+      .quest-desc {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
 
       .quest-reward {
-        font-size: 12px; font-weight: 600; color: var(--yellow);
-        white-space: nowrap; display: flex; align-items: center; gap: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--yellow);
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 4px;
       }
 
       .quest-status {
-        font-size: 11px; padding: 2px 8px; border-radius: 99px; font-weight: 500;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 99px;
+        font-weight: 500;
         white-space: nowrap;
       }
 
-      .status-active   { background: rgba(88,166,255,0.12); color: var(--blue); }
-      .status-done     { background: rgba(63,185,80,0.12);  color: var(--green); }
-      .status-locked   { background: rgba(72,79,88,0.3);    color: var(--faint); }
+      .status-active {
+        background: rgba(88, 166, 255, 0.12);
+        color: var(--blue);
+      }
+      .status-done {
+        background: rgba(63, 185, 80, 0.12);
+        color: var(--green);
+      }
+      .status-locked {
+        background: rgba(72, 79, 88, 0.3);
+        color: var(--faint);
+      }
 
-      .log-list { display: flex; flex-direction: column; gap: 6px; }
+      .log-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
 
       .log-item {
-        display: flex; align-items: center; gap: 10px;
-        font-size: 12px; color: var(--muted);
-        padding: 6px 0; border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 12px;
+        color: var(--muted);
+        padding: 6px 0;
+        border-bottom: 1px solid var(--border);
       }
 
-      .log-item:last-child { border-bottom: none; }
-      .log-pts { color: var(--yellow); font-weight: 600; margin-left: auto; white-space: nowrap; }
+      .log-item:last-child {
+        border-bottom: none;
+      }
+      .log-pts {
+        color: var(--yellow);
+        font-weight: 600;
+        margin-left: auto;
+        white-space: nowrap;
+      }
 
-      /* ── Icon colours ── */
-      .ic-blue   { background: rgba(88,166,255,0.12); }
-      .ic-purple { background: rgba(188,140,255,0.12); }
-      .ic-green  { background: rgba(63,185,80,0.12); }
-      .ic-orange { background: rgba(255,166,87,0.12); }
-      .ic-pink   { background: rgba(247,120,186,0.12); }
-      .ic-teal   { background: rgba(57,211,187,0.12); }
-      .ic-yellow { background: rgba(227,179,65,0.12); }
-      .ic-red    { background: rgba(248,81,73,0.12); }
+      .ic-blue {
+        background: rgba(88, 166, 255, 0.12);
+      }
+      .ic-purple {
+        background: rgba(188, 140, 255, 0.12);
+      }
+      .ic-green {
+        background: rgba(63, 185, 80, 0.12);
+      }
+      .ic-orange {
+        background: rgba(255, 166, 87, 0.12);
+      }
+      .ic-pink {
+        background: rgba(247, 120, 186, 0.12);
+      }
+      .ic-teal {
+        background: rgba(57, 211, 187, 0.12);
+      }
+      .ic-yellow {
+        background: rgba(227, 179, 65, 0.12);
+      }
+      .ic-red {
+        background: rgba(248, 81, 73, 0.12);
+      }
 
-      /* ── Footer ── */
-      footer { border-top: 1px solid var(--border); padding: 20px 0; margin-top: 12px; }
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 20px 0;
+        margin-top: 12px;
+      }
 
       .footer-inner {
-        display: flex; align-items: center; justify-content: space-between;
-        flex-wrap: wrap; gap: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
       }
 
-      .footer-inner p { font-size: 12px; color: var(--muted); }
+      .footer-inner p {
+        font-size: 12px;
+        color: var(--muted);
+      }
 
       .footer-inner code {
         font-family: "Cascadia Code", "Fira Code", Consolas, monospace;
-        font-size: 11.5px; background: var(--surface-2); border: 1px solid var(--border);
-        border-radius: 4px; padding: 1px 6px; color: var(--orange);
+        font-size: 11.5px;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 1px 6px;
+        color: var(--orange);
       }
 
       @media (max-width: 600px) {
-        .grid { grid-template-columns: 1fr; }
-        .header-inner { flex-direction: column; align-items: flex-start; }
-        .tab-btn { padding: 8px 10px; font-size: 12px; }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .header-inner {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .tab-btn {
+          padding: 8px 10px;
+          font-size: 12px;
+        }
+
+        .settings-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .mission-head {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .step-row {
+          align-items: center;
+        }
       }
     </style>
   </head>
@@ -326,317 +947,1214 @@
           <button class="tab-btn" data-tab="grow">Grow</button>
           <button class="tab-btn" data-tab="maintain">Maintain</button>
           <button class="tab-btn" data-tab="learn">Learn</button>
+          <button class="tab-btn" data-tab="resources">Resources</button>
+          <button class="tab-btn" data-tab="settings">Settings</button>
           <button class="tab-btn" data-tab="system">⚔ System</button>
         </nav>
 
-        <!-- ══ FOCUS ══ -->
         <div class="tab-panel active" id="tab-focus">
-          <p class="section-label">My Products</p>
+          <div class="goal-header">
+            <div class="goal-title">Focus Missions</div>
+            <div class="goal-sub">
+              Các nhiệm vụ lặp lại để tạo output cốt lõi mỗi ngày.
+            </div>
+          </div>
+
+          <div class="mission-list">
+            <article class="mission" data-mission>
+              <div class="mission-head">
+                <div class="mission-name">Daily Content Pipeline</div>
+                <div class="mission-meta">
+                  <span>Repeat: Daily</span><span>Reward: +12 pt</span>
+                </div>
+              </div>
+              <div class="mission-progress">
+                <div class="mission-progress-label">
+                  <span>Progress</span><span data-progress-text>0/4</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" data-progress-fill></div>
+                </div>
+              </div>
+              <ul class="mission-steps">
+                <li class="mission-step" data-requires="trading,agentic">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">
+                        Chọn topic và angle trong ngày
+                      </div>
+                      <div class="step-hint">
+                        Lấy insight chính từ market + signal.
+                      </div>
+                      <div class="step-links">
+                        <a class="quick-link" href="http://trading.localhost"
+                          >Open Trading</a
+                        >
+                        <a class="quick-link" href="http://agentic.localhost"
+                          >Open Agentic AI</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step" data-requires="research">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">Viết draft bài</div>
+                      <div class="step-hint">
+                        Bản ngắn cho X và bản dài cho blog.
+                      </div>
+                      <div class="step-links">
+                        <a class="quick-link" href="http://research.localhost"
+                          >Open Research Blog</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step" data-requires="buffer,x">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">Lên lịch publish</div>
+                      <div class="step-hint">
+                        Chốt khung giờ và format kênh.
+                      </div>
+                      <div class="step-links">
+                        <a
+                          class="quick-link"
+                          href="https://buffer.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          >Open Buffer</a
+                        >
+                        <a
+                          class="quick-link"
+                          href="https://x.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          >Open X</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step" data-requires="x,buffer">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">Review kết quả 24h</div>
+                      <div class="step-hint">
+                        Lưu learnings vào note hôm sau.
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </article>
+
+            <article class="mission" data-mission>
+              <div class="mission-head">
+                <div class="mission-name">Signal Validation Loop</div>
+                <div class="mission-meta">
+                  <span>Repeat: Daily</span><span>Reward: +8 pt</span>
+                </div>
+              </div>
+              <div class="mission-progress">
+                <div class="mission-progress-label">
+                  <span>Progress</span><span data-progress-text>0/3</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" data-progress-fill></div>
+                </div>
+              </div>
+              <ul class="mission-steps">
+                <li class="mission-step" data-requires="trading">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div><div class="step-title">Scan tín hiệu mới</div></div>
+                  </div>
+                </li>
+                <li class="mission-step" data-requires="trading,agentic">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">Cross-check intermarket</div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">Ghi quyết định và lý do</div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </article>
+          </div>
+          <p class="goal-summary">
+            Mẹo: Giữ 1-2 mission quan trọng hoàn thành mỗi ngày thay vì mở quá
+            nhiều việc cùng lúc.
+          </p>
+        </div>
+
+        <div class="tab-panel" id="tab-grow">
+          <div class="goal-header">
+            <div class="goal-title">Grow Missions</div>
+            <div class="goal-sub">
+              Chuỗi hành động tăng reach, follower, và traffic về sản phẩm.
+            </div>
+          </div>
+
+          <div class="mission-list">
+            <article class="mission" data-mission>
+              <div class="mission-head">
+                <div class="mission-name">Cross-Channel Distribution</div>
+                <div class="mission-meta">
+                  <span>Repeat: Daily</span><span>Reward: +9 pt</span>
+                </div>
+              </div>
+              <div class="mission-progress">
+                <div class="mission-progress-label">
+                  <span>Progress</span><span data-progress-text>0/4</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" data-progress-fill></div>
+                </div>
+              </div>
+              <ul class="mission-steps">
+                <li class="mission-step" data-requires="x">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">Publish 1 post trên X</div>
+                      <div class="step-links">
+                        <a
+                          class="quick-link"
+                          href="https://x.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          >Open X</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step" data-requires="hashnode,research">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">
+                        Đưa bài sang Hashnode hoặc Research Blog
+                      </div>
+                      <div class="step-links">
+                        <a
+                          class="quick-link"
+                          href="https://hashnode.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          >Open Hashnode</a
+                        ><a class="quick-link" href="http://research.localhost"
+                          >Open Research</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step" data-requires="buffer">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">
+                        Schedule follow-up với Buffer
+                      </div>
+                      <div class="step-links">
+                        <a
+                          class="quick-link"
+                          href="https://buffer.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          >Open Buffer</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step" data-requires="x,buffer">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">
+                        Ghi metric: impression, click, conversion
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </article>
+
+            <article class="mission" data-mission>
+              <div class="mission-head">
+                <div class="mission-name">Creative IP Growth</div>
+                <div class="mission-meta">
+                  <span>Repeat: Weekly</span><span>Reward: +14 pt</span>
+                </div>
+              </div>
+              <div class="mission-progress">
+                <div class="mission-progress-label">
+                  <span>Progress</span><span data-progress-text>0/3</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" data-progress-fill></div>
+                </div>
+              </div>
+              <ul class="mission-steps">
+                <li class="mission-step">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">
+                        Viết 1 đoạn lore hoặc script video
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step" data-requires="legacy,lore">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">Update game hoặc wiki</div>
+                      <div class="step-links">
+                        <a class="quick-link" href="http://legacy.localhost"
+                          >Open Legacy</a
+                        ><a
+                          class="quick-link"
+                          href="http://lucas-lore.localhost"
+                          >Open Lore</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step" data-requires="youtube,x">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">
+                        Phát hành teaser lên YouTube/X
+                      </div>
+                      <div class="step-links">
+                        <a
+                          class="quick-link"
+                          href="https://www.youtube.com/@lucasmediavn"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          >Open YouTube</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="tab-maintain">
+          <div class="goal-header">
+            <div class="goal-title">Maintain Missions</div>
+            <div class="goal-sub">
+              Checklist vận hành để hệ thống chạy ổn định và không bị gián đoạn.
+            </div>
+          </div>
+
+          <div class="mission-list">
+            <article class="mission" data-mission>
+              <div class="mission-head">
+                <div class="mission-name">Morning Ops Check</div>
+                <div class="mission-meta">
+                  <span>Repeat: Daily</span><span>Reward: +7 pt</span>
+                </div>
+              </div>
+              <div class="mission-progress">
+                <div class="mission-progress-label">
+                  <span>Progress</span><span data-progress-text>0/4</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" data-progress-fill></div>
+                </div>
+              </div>
+              <ul class="mission-steps">
+                <li class="mission-step">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">
+                        Check trạng thái dịch vụ chính
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">Check hàng đợi Celery/worker</div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">Review lỗi mới trong log</div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">Update board incident nếu có</div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </article>
+
+            <article class="mission" data-mission>
+              <div class="mission-head">
+                <div class="mission-name">Security / Backup Routine</div>
+                <div class="mission-meta">
+                  <span>Repeat: Weekly</span><span>Reward: +11 pt</span>
+                </div>
+              </div>
+              <div class="mission-progress">
+                <div class="mission-progress-label">
+                  <span>Progress</span><span data-progress-text>0/3</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" data-progress-fill></div>
+                </div>
+              </div>
+              <ul class="mission-steps">
+                <li class="mission-step" data-requires="quarks">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">Run security scan định kỳ</div>
+                      <div class="step-links">
+                        <a class="quick-link" href="http://quarks.localhost"
+                          >Open Quarks</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">Verify backup restore sample</div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">
+                        Rotate secrets/token theo lịch
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="tab-learn">
+          <div class="goal-header">
+            <div class="goal-title">Learn Missions</div>
+            <div class="goal-sub">
+              Học có hệ thống, theo chu kỳ lặp để tích lũy kỹ năng dài hạn.
+            </div>
+          </div>
+
+          <div class="mission-list">
+            <article class="mission" data-mission>
+              <div class="mission-head">
+                <div class="mission-name">GenAI Track</div>
+                <div class="mission-meta">
+                  <span>Repeat: Daily</span><span>Reward: +6 pt</span>
+                </div>
+              </div>
+              <div class="mission-progress">
+                <div class="mission-progress-label">
+                  <span>Progress</span><span data-progress-text>0/3</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" data-progress-fill></div>
+                </div>
+              </div>
+              <ul class="mission-steps">
+                <li class="mission-step" data-requires="coursera">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">Học 1 lesson Coursera</div>
+                      <div class="step-links">
+                        <a
+                          class="quick-link"
+                          href="https://www.coursera.org"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          >Open Coursera</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">
+                        Viết lại note ứng dụng thực tế
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">
+                        Áp dụng vào 1 project hiện có
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </article>
+
+            <article class="mission" data-mission>
+              <div class="mission-head">
+                <div class="mission-name">Chinese Practice</div>
+                <div class="mission-meta">
+                  <span>Repeat: Daily</span><span>Reward: +4 pt</span>
+                </div>
+              </div>
+              <div class="mission-progress">
+                <div class="mission-progress-label">
+                  <span>Progress</span><span data-progress-text>0/3</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" data-progress-fill></div>
+                </div>
+              </div>
+              <ul class="mission-steps">
+                <li class="mission-step" data-requires="duolingo">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">Duolingo 10-15 phút</div>
+                      <div class="step-links">
+                        <a
+                          class="quick-link"
+                          href="https://www.duolingo.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          >Open Duolingo</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step" data-requires="anki">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">Review deck Anki</div>
+                      <div class="step-links">
+                        <a
+                          class="quick-link"
+                          href="https://apps.ankiweb.net"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          >Open Anki</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mission-step" data-requires="pleco">
+                  <div class="step-row">
+                    <input type="checkbox" data-step />
+                    <div>
+                      <div class="step-title">Tra 5 từ mới bằng Pleco</div>
+                      <div class="step-links">
+                        <a
+                          class="quick-link"
+                          href="https://www.pleco.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          >Open Pleco</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="tab-resources">
+          <p class="section-label">Products & Platforms</p>
           <div class="grid">
             <article class="card">
               <div class="card-head">
                 <div class="card-icon ic-blue">📈</div>
                 <h2>Max Engine V2</h2>
               </div>
-              <p class="card-desc">Công cụ trading cá nhân — detect trend, validate với intermarket signals (bond yield, sector rotation), sentiment scoring. Vào lệnh → monitor timeout.</p>
+              <p class="card-desc">Công cụ trading cá nhân và signal engine.</p>
               <ul class="link-list">
-                <li><a href="http://trading.localhost">trading.localhost</a><span class="tag">Trading · AI Signals</span></li>
+                <li>
+                  <a href="http://trading.localhost">trading.localhost</a
+                  ><span class="tag">Trading</span>
+                </li>
               </ul>
             </article>
-
             <article class="card">
               <div class="card-head">
                 <div class="card-icon ic-purple">📚</div>
                 <h2>Dreamer House</h2>
               </div>
-              <p class="card-desc">Story platform với ML recommendations — collaborative filtering, content-based filtering. Target Vietnamese readers.</p>
+              <p class="card-desc">Story platform với recommendation.</p>
               <ul class="link-list">
-                <li><a href="http://dreamer.localhost">dreamer.localhost</a><span class="tag">Story Platform · Monetize</span></li>
+                <li>
+                  <a href="http://dreamer.localhost">dreamer.localhost</a
+                  ><span class="tag">Story</span>
+                </li>
               </ul>
             </article>
-          </div>
-
-          <p class="section-label">Key Resources</p>
-          <div class="grid">
             <article class="card">
               <div class="card-head">
                 <div class="card-icon ic-green">🤖</div>
                 <h2>Agentic AI</h2>
               </div>
-              <p class="card-desc">RAG research assistant — query macro/intermarket knowledge base để bổ trợ trading decisions và research.</p>
+              <p class="card-desc">RAG research assistant.</p>
               <ul class="link-list">
-                <li><a href="http://agentic.localhost">agentic.localhost</a><span class="tag">Research · RAG</span></li>
+                <li>
+                  <a href="http://agentic.localhost">agentic.localhost</a
+                  ><span class="tag">Research</span>
+                </li>
               </ul>
             </article>
-
-            <article class="card">
-              <div class="card-head">
-                <div class="card-icon ic-blue">🗄️</div>
-                <h2>Data Stores</h2>
-              </div>
-              <p class="card-desc">PostgreSQL &amp; Redis — market data, signals, user data cho tất cả products.</p>
-              <ul class="link-list">
-                <li><span style="font-size:13px;font-weight:500;color:var(--muted)">PostgreSQL</span><span class="tag">localhost:5432</span></li>
-                <li><span style="font-size:13px;font-weight:500;color:var(--muted)">Redis</span><span class="tag">localhost:6379</span></li>
-              </ul>
-            </article>
-
-            <article class="card">
-              <div class="card-head">
-                <div class="card-icon ic-blue">🐙</div>
-                <h2>GitHub</h2>
-              </div>
-              <p class="card-desc">Source code, CI/CD qua GHCR — tất cả repos và Actions pipelines.</p>
-              <ul class="link-list">
-                <li><a href="https://github.com/cyborgx0x" target="_blank" rel="noopener noreferrer">github.com/cyborgx0x</a><span class="tag">Source · CI/CD</span></li>
-              </ul>
-            </article>
-          </div>
-        </div>
-
-        <!-- ══ GROW ══ -->
-        <div class="tab-panel" id="tab-grow">
-          <p class="section-label">Channels</p>
-          <div class="grid">
-            <article class="card">
-              <div class="card-head">
-                <div class="card-icon ic-blue">𝕏</div>
-                <h2>X (Twitter)</h2>
-              </div>
-              <p class="card-desc">Premium account — short-form insights về trading, AI, tech. Primary channel để build audience và drive traffic.</p>
-              <ul class="link-list">
-                <li><a href="https://x.com" target="_blank" rel="noopener noreferrer">x.com</a><span class="tag">Short-form · Primary</span></li>
-              </ul>
-            </article>
-
-            <article class="card">
-              <div class="card-head">
-                <div class="card-icon ic-teal">🔷</div>
-                <h2>Hashnode</h2>
-              </div>
-              <p class="card-desc">Technical blog — deep-dive AI, trading systems, engineering. SEO organic traffic, dev community distribution.</p>
-              <ul class="link-list">
-                <li><a href="https://hashnode.com" target="_blank" rel="noopener noreferrer">hashnode.com</a><span class="tag">Tech Blog · SEO</span></li>
-              </ul>
-            </article>
-
-            <article class="card">
-              <div class="card-head">
-                <div class="card-icon ic-red">▶️</div>
-                <h2>YouTube — Lucas Media VN</h2>
-              </div>
-              <p class="card-desc">Video content — trading insights, AI demos, game lore. Long-form audience, AdSense revenue.</p>
-              <ul class="link-list">
-                <li><a href="https://www.youtube.com/@lucasmediavn" target="_blank" rel="noopener noreferrer">youtube.com/@lucasmediavn</a><span class="tag">Video · AdSense</span></li>
-              </ul>
-            </article>
-
-            <article class="card">
-              <div class="card-head">
-                <div class="card-icon ic-teal">🔬</div>
-                <h2>Research Blog</h2>
-              </div>
-              <p class="card-desc">Self-hosted — AI research, Politic Radar, Corruption Archive. Mirror sang Hashnode để tăng reach.</p>
-              <ul class="link-list">
-                <li><a href="http://research.localhost">research.localhost</a><span class="tag">Self-hosted · Mirror</span></li>
-              </ul>
-            </article>
-
-            <article class="card">
-              <div class="card-head">
-                <div class="card-icon ic-green">📅</div>
-                <h2>Buffer</h2>
-              </div>
-              <p class="card-desc">Schedule &amp; cross-post từ X sang các kênh khác — consistent posting không cần thủ công mỗi ngày.</p>
-              <ul class="link-list">
-                <li><a href="https://buffer.com" target="_blank" rel="noopener noreferrer">buffer.com</a><span class="tag">Scheduling · Cross-post</span></li>
-              </ul>
-            </article>
-          </div>
-
-          <p class="section-label">Creative IP</p>
-          <div class="grid">
-            <article class="card">
-              <div class="card-head">
-                <div class="card-icon ic-purple">🎮</div>
-                <h2>Legacy of Lucas</h2>
-              </div>
-              <p class="card-desc">Colony strategy game — original IP. Content về game feeds YouTube, lore feeds wiki.</p>
-              <ul class="link-list">
-                <li><a href="http://legacy.localhost">legacy.localhost</a><span class="tag">Game · IP</span></li>
-              </ul>
-            </article>
-
-            <article class="card">
-              <div class="card-head">
-                <div class="card-icon ic-yellow">🗺️</div>
-                <h2>Lucas Lore</h2>
-              </div>
-              <p class="card-desc">Lore wiki — fan engagement, cross-promote game và YouTube.</p>
-              <ul class="link-list">
-                <li><a href="http://lucas-lore.localhost">lucas-lore.localhost</a><span class="tag">Wiki · Engagement</span></li>
-              </ul>
-            </article>
-          </div>
-        </div>
-
-        <!-- ══ MAINTAIN ══ -->
-        <div class="tab-panel" id="tab-maintain">
-          <p class="section-label">Boss Projects — Keep Running</p>
-          <div class="grid">
             <article class="card">
               <div class="card-head">
                 <div class="card-icon ic-orange">🏪</div>
                 <h2>Bahang Xom</h2>
               </div>
-              <p class="card-desc">Social listening &amp; brand analysis — sentiment scoring, crisis alerts.</p>
+              <p class="card-desc">Social listening &amp; brand analysis.</p>
               <ul class="link-list">
-                <li><a href="http://bahangxom.localhost">bahangxom.localhost</a><span class="tag">Social Listening</span></li>
+                <li>
+                  <a href="http://bahangxom.localhost">bahangxom.localhost</a
+                  ><span class="tag">Social</span>
+                </li>
               </ul>
             </article>
-
             <article class="card">
               <div class="card-head">
                 <div class="card-icon ic-teal">🔍</div>
                 <h2>OCR Portal</h2>
               </div>
-              <p class="card-desc">Document OCR — EasyOCR async, MinIO storage.</p>
+              <p class="card-desc">Document OCR + API + MinIO.</p>
               <ul class="link-list">
-                <li><a href="http://ocr.localhost">ocr.localhost</a><span class="tag">OCR · UI</span></li>
-                <li><a href="http://ocr-api.localhost">ocr-api.localhost</a><span class="tag">OCR · API</span></li>
+                <li>
+                  <a href="http://ocr.localhost">ocr.localhost</a
+                  ><span class="tag">UI</span>
+                </li>
+                <li>
+                  <a href="http://ocr-api.localhost">ocr-api.localhost</a
+                  ><span class="tag">API</span>
+                </li>
+                <li>
+                  <a href="http://ocr-minio.localhost">ocr-minio.localhost</a
+                  ><span class="tag">MinIO</span>
+                </li>
               </ul>
             </article>
-
             <article class="card">
               <div class="card-head">
                 <div class="card-icon ic-yellow">📖</div>
                 <h2>Novel Pipeline</h2>
               </div>
-              <p class="card-desc">Crawl → LLM translate → EPUB/MOBI. Bronze/silver/gold pipeline.</p>
+              <p class="card-desc">Crawl, translate, và build EPUB/MOBI.</p>
               <ul class="link-list">
-                <li><a href="http://ebook.localhost">ebook.localhost</a><span class="tag">Novel · eBook</span></li>
+                <li>
+                  <a href="http://ebook.localhost">ebook.localhost</a
+                  ><span class="tag">eBook</span>
+                </li>
               </ul>
             </article>
-
             <article class="card">
               <div class="card-head">
                 <div class="card-icon ic-pink">🔐</div>
                 <h2>Quarks</h2>
               </div>
-              <p class="card-desc">Security scanning — Nuclei scanner, target management, vulnerability results.</p>
+              <p class="card-desc">Security scanning + target management.</p>
               <ul class="link-list">
-                <li><a href="http://quarks.localhost">quarks.localhost</a><span class="tag">Security Scanning</span></li>
-                <li><a href="https://cloud.projectdiscovery.io/" target="_blank" rel="noopener noreferrer">cloud.projectdiscovery.io</a><span class="tag">Cloud Results</span></li>
+                <li>
+                  <a href="http://quarks.localhost">quarks.localhost</a
+                  ><span class="tag">Scanner</span>
+                </li>
+                <li>
+                  <a
+                    href="https://cloud.projectdiscovery.io/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >cloud.projectdiscovery.io</a
+                  ><span class="tag">Cloud</span>
+                </li>
               </ul>
             </article>
-
             <article class="card">
               <div class="card-head">
                 <div class="card-icon ic-blue">✈️</div>
                 <h2>Laura Bot</h2>
               </div>
-              <p class="card-desc">Telegram webhook router — FSM conversations, subscription management.</p>
+              <p class="card-desc">Telegram bot webhook and FSM flow.</p>
               <ul class="link-list">
-                <li><a href="http://laura.localhost">laura.localhost</a><span class="tag">Telegram Bot</span></li>
-              </ul>
-            </article>
-
-            <article class="card">
-              <div class="card-head">
-                <div class="card-icon ic-yellow">🪣</div>
-                <h2>Object Storage</h2>
-              </div>
-              <p class="card-desc">MinIO S3-compatible — file storage cho OCR portal.</p>
-              <ul class="link-list">
-                <li><a href="http://ocr-minio.localhost">ocr-minio.localhost</a><span class="tag">MinIO Console</span></li>
+                <li>
+                  <a href="http://laura.localhost">laura.localhost</a
+                  ><span class="tag">Bot</span>
+                </li>
               </ul>
             </article>
           </div>
-        </div>
 
-        <!-- ══ LEARN ══ -->
-        <div class="tab-panel" id="tab-learn">
-          <p class="section-label">Certifications</p>
+          <p class="section-label">Channels & Learning</p>
           <div class="grid">
             <article class="card">
               <div class="card-head">
-                <div class="card-icon ic-purple">🎓</div>
+                <div class="card-icon ic-blue">𝕏</div>
+                <h2>X</h2>
+              </div>
+              <ul class="link-list">
+                <li>
+                  <a
+                    href="https://x.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >x.com</a
+                  ><span class="tag">Distribution</span>
+                </li>
+              </ul>
+            </article>
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-teal">🔷</div>
+                <h2>Hashnode</h2>
+              </div>
+              <ul class="link-list">
+                <li>
+                  <a
+                    href="https://hashnode.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >hashnode.com</a
+                  ><span class="tag">Blog</span>
+                </li>
+              </ul>
+            </article>
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-red">▶️</div>
+                <h2>YouTube</h2>
+              </div>
+              <ul class="link-list">
+                <li>
+                  <a
+                    href="https://www.youtube.com/@lucasmediavn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >youtube.com/@lucasmediavn</a
+                  ><span class="tag">Video</span>
+                </li>
+              </ul>
+            </article>
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-green">📅</div>
+                <h2>Buffer</h2>
+              </div>
+              <ul class="link-list">
+                <li>
+                  <a
+                    href="https://buffer.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >buffer.com</a
+                  ><span class="tag">Schedule</span>
+                </li>
+              </ul>
+            </article>
+            <article class="card">
+              <div class="card-head">
+                <div class="card-icon ic-yellow">🎓</div>
                 <h2>Coursera</h2>
               </div>
-              <p class="card-desc">Generative AI Engineer cert — đang học. Apply trực tiếp vào Max Engine signal generation và Dreamer House ML.</p>
               <ul class="link-list">
-                <li><a href="https://www.coursera.org" target="_blank" rel="noopener noreferrer">coursera.org</a><span class="tag">Gen AI Engineer</span></li>
-              </ul>
-            </article>
-          </div>
-
-          <p class="section-label">Language</p>
-          <div class="grid">
-            <article class="card">
-              <div class="card-head">
-                <div class="card-icon ic-green">🌱</div>
-                <h2>Duolingo</h2>
-              </div>
-              <p class="card-desc">Tiếng Trung — gamified daily practice, spaced repetition.</p>
-              <ul class="link-list">
-                <li><a href="https://www.duolingo.com" target="_blank" rel="noopener noreferrer">duolingo.com</a><span class="tag">Chinese · Daily</span></li>
-              </ul>
-            </article>
-
-            <article class="card">
-              <div class="card-head">
-                <div class="card-icon ic-blue">🃏</div>
-                <h2>Anki</h2>
-              </div>
-              <p class="card-desc">SRS flashcards — vocabulary drill, deck tiếng Trung cộng đồng có TTS.</p>
-              <ul class="link-list">
-                <li><a href="https://apps.ankiweb.net" target="_blank" rel="noopener noreferrer">apps.ankiweb.net</a><span class="tag">Flashcards · SRS</span></li>
-              </ul>
-            </article>
-
-            <article class="card">
-              <div class="card-head">
-                <div class="card-icon ic-orange">📖</div>
-                <h2>Pleco</h2>
-              </div>
-              <p class="card-desc">Từ điển Trung-Anh — tra chữ Hán, OCR scan, flashcard tích hợp.</p>
-              <ul class="link-list">
-                <li><a href="https://www.pleco.com" target="_blank" rel="noopener noreferrer">pleco.com</a><span class="tag">Dictionary · OCR</span></li>
+                <li>
+                  <a
+                    href="https://www.coursera.org"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >coursera.org</a
+                  ><span class="tag">Learning</span>
+                </li>
               </ul>
             </article>
           </div>
         </div>
 
-        <!-- ══ SYSTEM ══ -->
-        <div class="tab-panel" id="tab-system">
+        <div class="tab-panel" id="tab-settings">
+          <div class="goal-header">
+            <div class="goal-title">Connector Settings</div>
+            <div class="goal-sub">
+              Kết nối tài khoản trực tiếp từ dashboard. Token chỉ lưu trong
+              browser storage, không ghi vào file .env.
+            </div>
+          </div>
 
-          <!-- Player Profile -->
+          <div class="settings-shell">
+            <section class="settings-card">
+              <div class="settings-title">X OAuth Connect</div>
+              <p class="settings-note">
+                Nhập client ID và secret, bấm Connect để OAuth qua popup. Secret
+                chỉ dùng cho request hiện tại và không được lưu persistent.
+              </p>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="x-client-id">Client ID</label>
+                  <input
+                    id="x-client-id"
+                    type="text"
+                    placeholder="X client id"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="field">
+                  <label for="x-client-secret">Client Secret (optional)</label>
+                  <input
+                    id="x-client-secret"
+                    type="password"
+                    placeholder="X client secret"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="field full">
+                  <label for="x-scopes">Scopes</label>
+                  <input
+                    id="x-scopes"
+                    type="text"
+                    value="tweet.read tweet.write users.read"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="field full">
+                  <label for="x-redirect-uri"
+                    >Redirect URI (must match X App exactly)</label
+                  >
+                  <input
+                    id="x-redirect-uri"
+                    type="text"
+                    placeholder="https://api.pending.io.vn/x/callback"
+                    autocomplete="off"
+                  />
+                </div>
+              </div>
+              <div class="actions-row">
+                <button class="btn primary" id="x-connect-btn" type="button">
+                  Connect X
+                </button>
+                <button class="btn" id="x-test-btn" type="button">
+                  Test Token
+                </button>
+                <button class="btn danger" id="x-disconnect-btn" type="button">
+                  Disconnect
+                </button>
+              </div>
+              <div class="settings-alert" id="x-alert">Ready.</div>
+            </section>
+
+            <aside class="settings-card">
+              <div class="settings-title">Vault Status</div>
+              <p class="settings-note">
+                Token vault nằm ở localStorage của trình duyệt hiện tại.
+              </p>
+              <span class="status-pill" id="x-status-pill">Not connected</span>
+              <div class="mini-kv">
+                <div class="mini-row">
+                  <span class="label">Verified</span
+                  ><span class="val" id="x-verified-at">-</span>
+                </div>
+                <div class="mini-row">
+                  <span class="label">Scopes</span
+                  ><span class="val" id="x-vault-scopes">-</span>
+                </div>
+                <div class="mini-row">
+                  <span class="label">Token</span
+                  ><span class="val" id="x-token-preview">-</span>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="tab-system">
+          <div class="access-panel">
+            <p class="section-label">Service Access Validation</p>
+            <p class="access-note">
+              Trước khi tick các bước nhiệm vụ, hãy xác thực quyền truy cập dịch
+              vụ. Trạng thái được lưu local trên trình duyệt hiện tại.
+            </p>
+            <div class="access-list">
+              <div class="access-item">
+                <div class="access-head">
+                  <span class="access-name">Max Engine (trading.localhost)</span
+                  ><span class="access-time" data-access-time="trading"
+                    >Not verified</span
+                  >
+                </div>
+                <div class="access-actions">
+                  <a
+                    class="quick-link"
+                    href="http://trading.localhost"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Open</a
+                  ><label class="access-toggle"
+                    ><input type="checkbox" data-access-toggle="trading" />
+                    Access OK</label
+                  >
+                </div>
+              </div>
+              <div class="access-item">
+                <div class="access-head">
+                  <span class="access-name">Agentic AI</span
+                  ><span class="access-time" data-access-time="agentic"
+                    >Not verified</span
+                  >
+                </div>
+                <div class="access-actions">
+                  <a
+                    class="quick-link"
+                    href="http://agentic.localhost"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Open</a
+                  ><label class="access-toggle"
+                    ><input type="checkbox" data-access-toggle="agentic" />
+                    Access OK</label
+                  >
+                </div>
+              </div>
+              <div class="access-item">
+                <div class="access-head">
+                  <span class="access-name">Research Blog</span
+                  ><span class="access-time" data-access-time="research"
+                    >Not verified</span
+                  >
+                </div>
+                <div class="access-actions">
+                  <a
+                    class="quick-link"
+                    href="http://research.localhost"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Open</a
+                  ><label class="access-toggle"
+                    ><input type="checkbox" data-access-toggle="research" />
+                    Access OK</label
+                  >
+                </div>
+              </div>
+              <div class="access-item">
+                <div class="access-head">
+                  <span class="access-name">Buffer</span
+                  ><span class="access-time" data-access-time="buffer"
+                    >Not verified</span
+                  >
+                </div>
+                <div class="access-actions">
+                  <a
+                    class="quick-link"
+                    href="https://buffer.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Open</a
+                  ><label class="access-toggle"
+                    ><input type="checkbox" data-access-toggle="buffer" />
+                    Access OK</label
+                  >
+                </div>
+              </div>
+              <div class="access-item">
+                <div class="access-head">
+                  <span class="access-name">X (Twitter)</span
+                  ><span class="access-time" data-access-time="x"
+                    >Not verified</span
+                  >
+                </div>
+                <div class="access-actions">
+                  <a
+                    class="quick-link"
+                    href="https://x.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Open</a
+                  ><a class="quick-link" href="#" data-open-tab="settings"
+                    >Settings</a
+                  ><label class="access-toggle"
+                    ><input type="checkbox" data-access-toggle="x" /> Access
+                    OK</label
+                  >
+                </div>
+              </div>
+              <div class="access-item">
+                <div class="access-head">
+                  <span class="access-name">Hashnode</span
+                  ><span class="access-time" data-access-time="hashnode"
+                    >Not verified</span
+                  >
+                </div>
+                <div class="access-actions">
+                  <a
+                    class="quick-link"
+                    href="https://hashnode.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Open</a
+                  ><label class="access-toggle"
+                    ><input type="checkbox" data-access-toggle="hashnode" />
+                    Access OK</label
+                  >
+                </div>
+              </div>
+              <div class="access-item">
+                <div class="access-head">
+                  <span class="access-name">YouTube</span
+                  ><span class="access-time" data-access-time="youtube"
+                    >Not verified</span
+                  >
+                </div>
+                <div class="access-actions">
+                  <a
+                    class="quick-link"
+                    href="https://www.youtube.com/@lucasmediavn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Open</a
+                  ><label class="access-toggle"
+                    ><input type="checkbox" data-access-toggle="youtube" />
+                    Access OK</label
+                  >
+                </div>
+              </div>
+              <div class="access-item">
+                <div class="access-head">
+                  <span class="access-name">Legacy of Lucas</span
+                  ><span class="access-time" data-access-time="legacy"
+                    >Not verified</span
+                  >
+                </div>
+                <div class="access-actions">
+                  <a
+                    class="quick-link"
+                    href="http://legacy.localhost"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Open</a
+                  ><label class="access-toggle"
+                    ><input type="checkbox" data-access-toggle="legacy" />
+                    Access OK</label
+                  >
+                </div>
+              </div>
+              <div class="access-item">
+                <div class="access-head">
+                  <span class="access-name">Lucas Lore</span
+                  ><span class="access-time" data-access-time="lore"
+                    >Not verified</span
+                  >
+                </div>
+                <div class="access-actions">
+                  <a
+                    class="quick-link"
+                    href="http://lucas-lore.localhost"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Open</a
+                  ><label class="access-toggle"
+                    ><input type="checkbox" data-access-toggle="lore" /> Access
+                    OK</label
+                  >
+                </div>
+              </div>
+              <div class="access-item">
+                <div class="access-head">
+                  <span class="access-name">Quarks</span
+                  ><span class="access-time" data-access-time="quarks"
+                    >Not verified</span
+                  >
+                </div>
+                <div class="access-actions">
+                  <a
+                    class="quick-link"
+                    href="http://quarks.localhost"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Open</a
+                  ><label class="access-toggle"
+                    ><input type="checkbox" data-access-toggle="quarks" />
+                    Access OK</label
+                  >
+                </div>
+              </div>
+              <div class="access-item">
+                <div class="access-head">
+                  <span class="access-name">Coursera</span
+                  ><span class="access-time" data-access-time="coursera"
+                    >Not verified</span
+                  >
+                </div>
+                <div class="access-actions">
+                  <a
+                    class="quick-link"
+                    href="https://www.coursera.org"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Open</a
+                  ><label class="access-toggle"
+                    ><input type="checkbox" data-access-toggle="coursera" />
+                    Access OK</label
+                  >
+                </div>
+              </div>
+              <div class="access-item">
+                <div class="access-head">
+                  <span class="access-name">Duolingo</span
+                  ><span class="access-time" data-access-time="duolingo"
+                    >Not verified</span
+                  >
+                </div>
+                <div class="access-actions">
+                  <a
+                    class="quick-link"
+                    href="https://www.duolingo.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Open</a
+                  ><label class="access-toggle"
+                    ><input type="checkbox" data-access-toggle="duolingo" />
+                    Access OK</label
+                  >
+                </div>
+              </div>
+              <div class="access-item">
+                <div class="access-head">
+                  <span class="access-name">Anki</span
+                  ><span class="access-time" data-access-time="anki"
+                    >Not verified</span
+                  >
+                </div>
+                <div class="access-actions">
+                  <a
+                    class="quick-link"
+                    href="https://apps.ankiweb.net"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Open</a
+                  ><label class="access-toggle"
+                    ><input type="checkbox" data-access-toggle="anki" /> Access
+                    OK</label
+                  >
+                </div>
+              </div>
+              <div class="access-item">
+                <div class="access-head">
+                  <span class="access-name">Pleco</span
+                  ><span class="access-time" data-access-time="pleco"
+                    >Not verified</span
+                  >
+                </div>
+                <div class="access-actions">
+                  <a
+                    class="quick-link"
+                    href="https://www.pleco.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Open</a
+                  ><label class="access-toggle"
+                    ><input type="checkbox" data-access-toggle="pleco" /> Access
+                    OK</label
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="profile-banner">
             <div class="avatar">🧑‍💻</div>
             <div class="profile-info">
               <div class="profile-name">cyborgx0x</div>
               <div class="profile-title">▸ Generative AI Engineer · Lv.12</div>
               <div class="stats-row">
-                <div class="stat"><div class="stat-val">248</div><div class="stat-label">Points</div></div>
-                <div class="stat"><div class="stat-val">12</div><div class="stat-label">Level</div></div>
-                <div class="stat"><div class="stat-val">7</div><div class="stat-label">Streak</div></div>
-                <div class="stat"><div class="stat-val">3</div><div class="stat-label">Done today</div></div>
+                <div class="stat">
+                  <div class="stat-val">248</div>
+                  <div class="stat-label">Points</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-val">12</div>
+                  <div class="stat-label">Level</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-val">7</div>
+                  <div class="stat-label">Streak</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-val">3</div>
+                  <div class="stat-label">Done today</div>
+                </div>
               </div>
               <div class="xp-bar-wrap">
-                <div class="xp-bar-labels"><span>XP 248 / 300</span><span>Lv.13</span></div>
-                <div class="xp-bar"><div class="xp-bar-fill" style="width:82%"></div></div>
+                <div class="xp-bar-labels">
+                  <span>XP 248 / 300</span><span>Lv.13</span>
+                </div>
+                <div class="xp-bar">
+                  <div class="xp-bar-fill" style="width: 82%"></div>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Active Quests -->
           <p class="section-label">Active Quests</p>
           <div class="quest-list">
             <div class="quest-item">
               <div class="quest-icon ic-blue">📖</div>
               <div class="quest-body">
                 <div class="quest-title">Học tiếng Anh 10 phút</div>
-                <div class="quest-desc">Duolingo hoặc bất kỳ nguồn nào · mỗi ngày</div>
+                <div class="quest-desc">
+                  Duolingo hoặc bất kỳ nguồn nào · mỗi ngày
+                </div>
               </div>
               <span class="quest-reward">+1 pt</span>
               <span class="quest-status status-active">Active</span>
@@ -665,7 +2183,9 @@
             <div class="quest-item">
               <div class="quest-icon ic-yellow">📝</div>
               <div class="quest-body">
-                <div class="quest-title">Viết 1 blog post hoặc research note</div>
+                <div class="quest-title">
+                  Viết 1 blog post hoặc research note
+                </div>
                 <div class="quest-desc">Publish lên Research Blog</div>
               </div>
               <span class="quest-reward">+8 pt</span>
@@ -683,32 +2203,48 @@
             </div>
           </div>
 
-          <!-- Reward Log -->
           <p class="section-label">Recent Rewards</p>
           <div class="log-list">
-            <div class="log-item"><span>💪</span><span>Tập thể dục 20 phút</span><span class="log-pts">+2 pt</span></div>
-            <div class="log-item"><span>🎓</span><span>Coursera · Lesson: Prompt Engineering</span><span class="log-pts">+5 pt</span></div>
-            <div class="log-item"><span>📖</span><span>Duolingo 10 phút</span><span class="log-pts">+1 pt</span></div>
-            <div class="log-item"><span>🚀</span><span>Deploy OCR Portal monorepo CI</span><span class="log-pts">+10 pt</span></div>
-            <div class="log-item"><span>📖</span><span>Duolingo 10 phút</span><span class="log-pts">+1 pt</span></div>
+            <div class="log-item">
+              <span>💪</span><span>Tập thể dục 20 phút</span
+              ><span class="log-pts">+2 pt</span>
+            </div>
+            <div class="log-item">
+              <span>🎓</span><span>Coursera · Lesson: Prompt Engineering</span
+              ><span class="log-pts">+5 pt</span>
+            </div>
+            <div class="log-item">
+              <span>📖</span><span>Duolingo 10 phút</span
+              ><span class="log-pts">+1 pt</span>
+            </div>
+            <div class="log-item">
+              <span>🚀</span><span>Deploy OCR Portal monorepo CI</span
+              ><span class="log-pts">+10 pt</span>
+            </div>
+            <div class="log-item">
+              <span>📖</span><span>Duolingo 10 phút</span
+              ><span class="log-pts">+1 pt</span>
+            </div>
           </div>
-
         </div>
-
       </div>
     </main>
 
     <footer>
       <div class="wrap">
         <div class="footer-inner">
-          <p>Run <code>docker compose up -d</code> from <strong>E:/Projects</strong> to bring all services online.</p>
-          <p style="color:var(--faint)">All <code>*.localhost</code> domains → nginx-gateway :80</p>
+          <p>
+            Run <code>docker compose up -d</code> from
+            <strong>E:/Projects</strong> to bring all services online.
+          </p>
+          <p style="color: var(--faint)">
+            All <code>*.localhost</code> domains → nginx-gateway :80
+          </p>
         </div>
       </div>
     </footer>
 
     <script>
-      // Tab switching
       const btns = document.querySelectorAll(".tab-btn");
       const panels = document.querySelectorAll(".tab-panel");
       btns.forEach((btn) => {
@@ -716,17 +2252,488 @@
           btns.forEach((b) => b.classList.remove("active"));
           panels.forEach((p) => p.classList.remove("active"));
           btn.classList.add("active");
-          document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+          document
+            .getElementById("tab-" + btn.dataset.tab)
+            .classList.add("active");
         });
       });
 
-      // Mouse-tracking glow on cards
       document.querySelectorAll(".card").forEach((card) => {
         card.addEventListener("mousemove", (e) => {
           const r = card.getBoundingClientRect();
-          card.style.setProperty("--mx", ((e.clientX - r.left) / r.width) * 100 + "%");
-          card.style.setProperty("--my", ((e.clientY - r.top) / r.height) * 100 + "%");
+          card.style.setProperty(
+            "--mx",
+            ((e.clientX - r.left) / r.width) * 100 + "%"
+          );
+          card.style.setProperty(
+            "--my",
+            ((e.clientY - r.top) / r.height) * 100 + "%"
+          );
         });
+      });
+
+      const ACCESS_STATE_KEY = "super-system-access-state-v1";
+      const OAUTH_VAULT_KEY = "super-system-oauth-v1";
+      const OAUTH_PENDING_KEY = "super-system-oauth-pending-v1";
+      const DEFAULT_X_REDIRECT_URI = window.location.origin + "/x/callback";
+      const accessLabels = {
+        trading: "Max Engine",
+        agentic: "Agentic AI",
+        research: "Research Blog",
+        buffer: "Buffer",
+        x: "X",
+        hashnode: "Hashnode",
+        youtube: "YouTube",
+        legacy: "Legacy",
+        lore: "Lucas Lore",
+        quarks: "Quarks",
+        coursera: "Coursera",
+        duolingo: "Duolingo",
+        anki: "Anki",
+        pleco: "Pleco",
+      };
+
+      function loadJsonStorage(key, fallback) {
+        try {
+          return JSON.parse(localStorage.getItem(key) || "null") || fallback;
+        } catch (err) {
+          return fallback;
+        }
+      }
+
+      function saveJsonStorage(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+      }
+
+      function loadSessionJson(key, fallback) {
+        try {
+          return JSON.parse(sessionStorage.getItem(key) || "null") || fallback;
+        } catch (err) {
+          return fallback;
+        }
+      }
+
+      function saveSessionJson(key, value) {
+        sessionStorage.setItem(key, JSON.stringify(value));
+      }
+
+      function clearSessionJson(key) {
+        sessionStorage.removeItem(key);
+      }
+
+      function loadAccessState() {
+        return loadJsonStorage(ACCESS_STATE_KEY, {});
+      }
+
+      function saveAccessState(state) {
+        saveJsonStorage(ACCESS_STATE_KEY, state);
+      }
+
+      function formatAccessTime(iso) {
+        if (!iso) return "Not verified";
+        const d = new Date(iso);
+        if (Number.isNaN(d.getTime())) return "Not verified";
+        return "Verified: " + d.toLocaleString();
+      }
+
+      function parseRequiredServices(stepEl) {
+        return (stepEl.dataset.requires || "")
+          .split(",")
+          .map((item) => item.trim())
+          .filter(Boolean);
+      }
+
+      function getMissingServices(stepEl, state) {
+        const required = parseRequiredServices(stepEl);
+        return required.filter(
+          (serviceId) => !(state[serviceId] && state[serviceId].granted)
+        );
+      }
+
+      function refreshAccessUI(state) {
+        document.querySelectorAll("[data-access-toggle]").forEach((toggle) => {
+          const serviceId = toggle.dataset.accessToggle;
+          const entry = state[serviceId] || {
+            granted: false,
+            verifiedAt: null,
+          };
+          toggle.checked = !!entry.granted;
+          const timeEl = document.querySelector(
+            "[data-access-time='" + serviceId + "']"
+          );
+          if (timeEl) timeEl.textContent = formatAccessTime(entry.verifiedAt);
+        });
+      }
+
+      function refreshLockedSteps(state) {
+        document.querySelectorAll(".mission-step").forEach((stepEl) => {
+          const missing = getMissingServices(stepEl, state);
+          stepEl.classList.toggle("locked", missing.length > 0);
+        });
+      }
+
+      function setAccessGranted(serviceId, granted, verifiedAt) {
+        accessState[serviceId] = {
+          granted: !!granted,
+          verifiedAt: granted ? verifiedAt || new Date().toISOString() : null,
+        };
+        saveAccessState(accessState);
+        refreshAccessUI(accessState);
+        refreshLockedSteps(accessState);
+      }
+
+      function maskToken(token) {
+        if (!token || token.length < 14) return "-";
+        return token.slice(0, 8) + "..." + token.slice(-4);
+      }
+
+      function formatDisplayTime(iso) {
+        if (!iso) return "-";
+        const date = new Date(iso);
+        if (Number.isNaN(date.getTime())) return "-";
+        return date.toLocaleString();
+      }
+
+      async function exchangeXCode(params) {
+        const body = new URLSearchParams({
+          code: params.code,
+          state: params.state,
+          session_id: params.sessionId,
+        });
+
+        const headers = {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Accept: "application/json",
+        };
+
+        const resp = await fetch("/oauth/x/exchange", {
+          method: "POST",
+          headers,
+          body,
+        });
+
+        const data = await resp.json().catch(() => ({}));
+        if (!resp.ok) {
+          const detail =
+            data.error_description || data.detail || JSON.stringify(data);
+          throw new Error("Token exchange failed: " + detail);
+        }
+        return data;
+      }
+
+      async function createXOAuthSession(params) {
+        const body = new URLSearchParams({
+          client_id: params.clientId,
+          client_secret: params.clientSecret || "",
+          redirect_uri: params.redirectUri,
+          scope: params.scope,
+        });
+
+        const resp = await fetch("/oauth/x/session", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Accept: "application/json",
+          },
+          body,
+        });
+
+        const data = await resp.json().catch(() => ({}));
+        if (!resp.ok) {
+          const detail =
+            data.error_description || data.detail || JSON.stringify(data);
+          throw new Error("Create OAuth session failed: " + detail);
+        }
+        return data;
+      }
+
+      function openTab(tabName) {
+        btns.forEach((b) => b.classList.remove("active"));
+        panels.forEach((p) => p.classList.remove("active"));
+        const nextBtn = document.querySelector(
+          ".tab-btn[data-tab='" + tabName + "']"
+        );
+        const nextPanel = document.getElementById("tab-" + tabName);
+        if (nextBtn) nextBtn.classList.add("active");
+        if (nextPanel) nextPanel.classList.add("active");
+      }
+
+      const oauthVault = loadJsonStorage(OAUTH_VAULT_KEY, {});
+      let pendingOAuth = loadSessionJson(OAUTH_PENDING_KEY, null);
+
+      function saveOAuthVault() {
+        saveJsonStorage(OAUTH_VAULT_KEY, oauthVault);
+      }
+
+      function setXAlert(message, isError) {
+        const alertEl = document.getElementById("x-alert");
+        if (!alertEl) return;
+        alertEl.textContent = message;
+        alertEl.style.color = isError ? "#ffb8b3" : "var(--muted)";
+      }
+
+      function refreshXSettingsUI() {
+        const xVault = oauthVault.x || null;
+        const pill = document.getElementById("x-status-pill");
+        const verifiedEl = document.getElementById("x-verified-at");
+        const scopesEl = document.getElementById("x-vault-scopes");
+        const tokenEl = document.getElementById("x-token-preview");
+        const clientIdInput = document.getElementById("x-client-id");
+        const redirectInput = document.getElementById("x-redirect-uri");
+
+        if (
+          clientIdInput &&
+          xVault &&
+          xVault.clientId &&
+          !clientIdInput.value
+        ) {
+          clientIdInput.value = xVault.clientId;
+        }
+
+        if (redirectInput && !redirectInput.value) {
+          redirectInput.value =
+            (xVault && xVault.redirectUri) || DEFAULT_X_REDIRECT_URI;
+        }
+
+        if (xVault && xVault.accessToken) {
+          pill.textContent = "Connected";
+          pill.classList.add("connected");
+          verifiedEl.textContent = formatDisplayTime(xVault.verifiedAt);
+          scopesEl.textContent = xVault.scope || "-";
+          tokenEl.textContent = maskToken(xVault.accessToken);
+          setAccessGranted("x", true, xVault.verifiedAt);
+        } else {
+          pill.textContent = "Not connected";
+          pill.classList.remove("connected");
+          verifiedEl.textContent = "-";
+          scopesEl.textContent = "-";
+          tokenEl.textContent = "-";
+          setAccessGranted("x", false, null);
+        }
+      }
+
+      let accessState = loadAccessState();
+      refreshAccessUI(accessState);
+      refreshLockedSteps(accessState);
+      refreshXSettingsUI();
+
+      document.querySelectorAll("[data-open-tab]").forEach((link) => {
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          openTab(link.dataset.openTab);
+        });
+      });
+
+      document.querySelectorAll("[data-access-toggle]").forEach((toggle) => {
+        toggle.addEventListener("change", () => {
+          const serviceId = toggle.dataset.accessToggle;
+          if (serviceId === "x") {
+            if (oauthVault.x && oauthVault.x.accessToken) {
+              refreshAccessUI(accessState);
+              return;
+            }
+          }
+          accessState[serviceId] = {
+            granted: toggle.checked,
+            verifiedAt: toggle.checked ? new Date().toISOString() : null,
+          };
+          saveAccessState(accessState);
+          refreshAccessUI(accessState);
+          refreshLockedSteps(accessState);
+        });
+      });
+
+      function updateMissionProgress(mission) {
+        const steps = mission.querySelectorAll("[data-step]");
+        const done = Array.from(steps).filter((step) => step.checked).length;
+        const total = steps.length;
+        const pct = total ? (done / total) * 100 : 0;
+
+        const text = mission.querySelector("[data-progress-text]");
+        const fill = mission.querySelector("[data-progress-fill]");
+        if (text) text.textContent = done + "/" + total;
+        if (fill) fill.style.width = pct + "%";
+      }
+
+      document.querySelectorAll("[data-mission]").forEach((mission) => {
+        mission.querySelectorAll("[data-step]").forEach((step) => {
+          step.addEventListener("change", () => {
+            const stepEl = step.closest(".mission-step");
+            const missing = getMissingServices(stepEl, accessState);
+            if (step.checked && missing.length > 0) {
+              step.checked = false;
+              const missingLabels = missing
+                .map((serviceId) => accessLabels[serviceId] || serviceId)
+                .join(", ");
+              alert(
+                "Cần xác thực quyền truy cập trước: " +
+                  missingLabels +
+                  ". Vào tab System > Service Access Validation."
+              );
+            }
+            updateMissionProgress(mission);
+          });
+        });
+        updateMissionProgress(mission);
+      });
+
+      document
+        .getElementById("x-connect-btn")
+        .addEventListener("click", async () => {
+          try {
+            const clientId = document
+              .getElementById("x-client-id")
+              .value.trim();
+            const clientSecret = document
+              .getElementById("x-client-secret")
+              .value.trim();
+            const redirectUri =
+              document.getElementById("x-redirect-uri").value.trim() ||
+              DEFAULT_X_REDIRECT_URI;
+            const scope = (
+              document.getElementById("x-scopes").value ||
+              "tweet.read tweet.write users.read"
+            )
+              .replace(/,/g, " ")
+              .replace(/\s+/g, " ")
+              .trim();
+
+            if (!clientId) {
+              setXAlert("Please provide X Client ID.", true);
+              return;
+            }
+
+            setXAlert("Creating secure OAuth session on backend...", false);
+            const sessionData = await createXOAuthSession({
+              clientId,
+              redirectUri,
+              clientSecret,
+              scope,
+            });
+
+            pendingOAuth = {
+              sessionId: sessionData.session_id,
+              authorizeUrl: sessionData.authorize_url,
+              expiresIn: sessionData.expires_in,
+              clientId,
+              redirectUri,
+              scope,
+              createdAt: new Date().toISOString(),
+            };
+            saveSessionJson(OAUTH_PENDING_KEY, pendingOAuth);
+
+            // Secret is kept server-side in in-memory session; client only holds session id.
+            const popup = window.open(
+              sessionData.authorize_url,
+              "x-oauth",
+              "popup=yes,width=560,height=760"
+            );
+            if (!popup) {
+              setXAlert("Popup blocked. Allow popups then retry.", true);
+              return;
+            }
+            setXAlert("Waiting for X authorization callback...", false);
+          } catch (err) {
+            setXAlert(String(err.message || err), true);
+          }
+        });
+
+      document
+        .getElementById("x-disconnect-btn")
+        .addEventListener("click", () => {
+          delete oauthVault.x;
+          saveOAuthVault();
+          refreshXSettingsUI();
+          setXAlert("Disconnected and removed token from local vault.", false);
+        });
+
+      document
+        .getElementById("x-test-btn")
+        .addEventListener("click", async () => {
+          try {
+            const xVault = oauthVault.x;
+            if (!xVault || !xVault.accessToken) {
+              setXAlert("No token in vault. Connect first.", true);
+              return;
+            }
+
+            const resp = await fetch("/oauth/x/users-me", {
+              headers: {
+                Authorization: "Bearer " + xVault.accessToken,
+                Accept: "application/json",
+              },
+            });
+
+            const data = await resp.json().catch(() => ({}));
+            if (!resp.ok) {
+              throw new Error(
+                data.detail || data.error_description || "X users/me failed"
+              );
+            }
+
+            oauthVault.x.verifiedAt = new Date().toISOString();
+            oauthVault.x.userId = data && data.data ? data.data.id : undefined;
+            saveOAuthVault();
+            refreshXSettingsUI();
+            setXAlert("Token works. users/me verified.", false);
+          } catch (err) {
+            setXAlert(String(err.message || err), true);
+          }
+        });
+
+      window.addEventListener("message", async (event) => {
+        if (event.origin !== window.location.origin) return;
+        const payload = event.data || {};
+        if (payload.type !== "x-oauth-callback") return;
+
+        try {
+          if (payload.error) {
+            throw new Error(
+              "OAuth error: " +
+                payload.error +
+                (payload.errorDescription
+                  ? " - " + payload.errorDescription
+                  : "")
+            );
+          }
+
+          pendingOAuth =
+            pendingOAuth || loadSessionJson(OAUTH_PENDING_KEY, null);
+          if (!pendingOAuth) {
+            throw new Error("Missing OAuth session. Click Connect again.");
+          }
+          if (!payload.code) {
+            throw new Error("Missing authorization code from callback.");
+          }
+
+          setXAlert("Exchanging code for access token...", false);
+          const tokenData = await exchangeXCode({
+            code: payload.code,
+            state: payload.state || "",
+            sessionId: pendingOAuth.sessionId,
+          });
+
+          oauthVault.x = {
+            clientId: pendingOAuth.clientId,
+            accessToken: tokenData.access_token || "",
+            refreshToken: tokenData.refresh_token || "",
+            tokenType: tokenData.token_type || "bearer",
+            scope: tokenData.scope || pendingOAuth.scope,
+            redirectUri: pendingOAuth.redirectUri,
+            verifiedAt: new Date().toISOString(),
+          };
+          saveOAuthVault();
+          clearSessionJson(OAUTH_PENDING_KEY);
+          pendingOAuth = null;
+
+          refreshXSettingsUI();
+          setXAlert(
+            "Connected successfully. Token saved in browser vault.",
+            false
+          );
+        } catch (err) {
+          setXAlert(String(err.message || err), true);
+        }
       });
     </script>
   </body>

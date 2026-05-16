@@ -1,0 +1,38 @@
+{% for mission in missions %}
+<article class="mission" data-mission>
+  <div class="mission-head">
+    <div class="mission-name">{{ mission.title }}</div>
+    <div class="mission-meta">
+      <span>Repeat: {{ mission.meta.repeat }}</span><span>Reward: +{{ mission.meta.reward }} pt</span>
+    </div>
+  </div>
+  <div class="mission-progress">
+    <div class="mission-progress-label">
+      <span>Progress</span><span data-progress-text>0/{{ mission.meta.steps|length }}</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" data-progress-fill></div>
+    </div>
+  </div>
+  <ul class="mission-steps">
+    {% for step in mission.meta.steps %}
+    <li class="mission-step"{% if step.requires %} data-requires="{{ step.requires }}"{% endif %}>
+      <div class="step-row">
+        <input type="checkbox" data-step />
+        <div>
+          <div class="step-title">{{ step.title }}</div>
+          {% if step.hint %}<div class="step-hint">{{ step.hint }}</div>{% endif %}
+          {% if step.links %}
+          <div class="step-links">
+            {% for link in step.links %}
+            <a class="quick-link" href="{{ link.url }}"{% if link.external %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ link.label }}</a>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</article>
+{% endfor %}

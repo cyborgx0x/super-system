@@ -1,0 +1,76 @@
+<div class="tab-panel" id="tab-system">
+  <div class="access-panel">
+    <p class="section-label">Service Access Validation</p>
+    <p class="access-note">
+      Trước khi tick các bước nhiệm vụ, hãy xác thực quyền truy cập dịch
+      vụ. Trạng thái được lưu local trên trình duyệt hiện tại.
+    </p>
+    <div class="access-list">
+      {% for svc in access_services %}
+      <div class="access-item">
+        <div class="access-head">
+          <span class="access-name">{{ svc.name }}</span>
+          <span class="access-time" data-access-time="{{ svc.slug }}">Not verified</span>
+        </div>
+        <div class="access-actions">
+          <a class="quick-link" href="{{ svc.url }}"{% if svc.is_external %} target="_blank" rel="noopener noreferrer"{% endif %}>Open</a>
+          {% for link in svc.extra_links %}
+          <a class="quick-link" href="{{ link.href }}"{% if link.data_open_tab %} data-open-tab="{{ link.data_open_tab }}"{% endif %}>{{ link.label }}</a>
+          {% endfor %}
+          <label class="access-toggle">
+            <input type="checkbox" data-access-toggle="{{ svc.slug }}" /> Access OK
+          </label>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="profile-banner">
+    <div class="avatar">🧑‍💻</div>
+    <div class="profile-info">
+      <div class="profile-name">cyborgx0x</div>
+      <div class="profile-title">▸ Generative AI Engineer · Lv.12</div>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-val">248</div><div class="stat-label">Points</div></div>
+        <div class="stat"><div class="stat-val">12</div><div class="stat-label">Level</div></div>
+        <div class="stat"><div class="stat-val">7</div><div class="stat-label">Streak</div></div>
+        <div class="stat"><div class="stat-val">3</div><div class="stat-label">Done today</div></div>
+      </div>
+      <div class="xp-bar-wrap">
+        <div class="xp-bar-labels"><span>XP 248 / 300</span><span>Lv.13</span></div>
+        <div class="xp-bar"><div class="xp-bar-fill" style="width: 82%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="section-label">Active Quests</p>
+  <div class="quest-list">
+    {% for quest in quests %}
+    <div class="quest-item">
+      <div class="quest-icon {{ quest.icon_class }}">{{ quest.icon }}</div>
+      <div class="quest-body">
+        <div class="quest-title">{{ quest.title }}</div>
+        <div class="quest-desc">{{ quest.description }}</div>
+      </div>
+      <span class="quest-reward">+{{ quest.reward }} pt</span>
+      {% if quest.status == "active" %}
+      <span class="quest-status status-active">Active</span>
+      {% elif quest.status == "done" %}
+      <span class="quest-status status-done">Done ✓</span>
+      {% else %}
+      <span class="quest-status status-locked">Locked</span>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <p class="section-label">Recent Rewards</p>
+  <div class="log-list">
+    <div class="log-item"><span>💪</span><span>Tập thể dục 20 phút</span><span class="log-pts">+2 pt</span></div>
+    <div class="log-item"><span>🎓</span><span>Coursera · Lesson: Prompt Engineering</span><span class="log-pts">+5 pt</span></div>
+    <div class="log-item"><span>📖</span><span>Duolingo 10 phút</span><span class="log-pts">+1 pt</span></div>
+    <div class="log-item"><span>🚀</span><span>Deploy OCR Portal monorepo CI</span><span class="log-pts">+10 pt</span></div>
+    <div class="log-item"><span>📖</span><span>Duolingo 10 phút</span><span class="log-pts">+1 pt</span></div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="tab-panel" id="tab-resources">
+  <p class="section-label">Products & Platforms</p>
+  <div class="grid">
+    {% for r in products %}
+    <article class="card">
+      <div class="card-head">
+        <div class="card-icon {{ r.icon_class }}">{{ r.icon }}</div>
+        <h2>{{ r.name }}</h2>
+      </div>
+      {% if r.description %}<p class="card-desc">{{ r.description }}</p>{% endif %}
+      <ul class="link-list">
+        {% for link in r.links %}
+        <li>
+          <a href="{{ link.url }}"{% if link.external %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ link.label }}</a><span class="tag">{{ link.tag }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </article>
+    {% endfor %}
+  </div>
+
+  <p class="section-label">Channels & Learning</p>
+  <div class="grid">
+    {% for r in channels %}
+    <article class="card">
+      <div class="card-head">
+        <div class="card-icon {{ r.icon_class }}">{{ r.icon }}</div>
+        <h2>{{ r.name }}</h2>
+      </div>
+      <ul class="link-list">
+        {% for link in r.links %}
+        <li>
+          <a href="{{ link.url }}"{% if link.external %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ link.label }}</a><span class="tag">{{ link.tag }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </article>
+    {% endfor %}
+  </div>
+</div>

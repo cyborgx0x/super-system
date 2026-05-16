@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Create {{ resource_model }}</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: #0d1117;
+        color: #e6edf3;
+      }
+      .wrap {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 13px;
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+        background: #0d1117;
+        color: #e6edf3;
+      }
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #58a6ff;
+      }
+      .field {
+        margin-bottom: 12px;
+      }
+      button {
+        border: 1px solid #30363d;
+        background: rgba(88, 166, 255, 0.18);
+        color: #e6edf3;
+        border-radius: 8px;
+        padding: 8px 14px;
+        cursor: pointer;
+      }
+      button:hover {
+        border-color: #58a6ff;
+      }
+      a {
+        color: #58a6ff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p><a href="/resources/{{ resource_name }}/">Back list</a></p>
+      <h1>Create {{ resource_model }}</h1>
+      <form method="post">
+        {% csrf_token %} {% for field in fields %}
+        <div class="field">
+          <label for="{{ field.name }}">{{ field.name }}</label>
+          {% if field.get_internal_type == "TextField" or
+          field.get_internal_type == "JSONField" %}
+          <textarea
+            id="{{ field.name }}"
+            name="{{ field.name }}"
+            rows="4"
+          ></textarea>
+          {% else %}
+          <input id="{{ field.name }}" name="{{ field.name }}" />
+          {% endif %}
+        </div>
+        {% endfor %}
+        <button type="submit">Create</button>
+      </form>
+    </div>
+  </body>
+</html>

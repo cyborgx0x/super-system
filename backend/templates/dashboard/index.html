@@ -1,0 +1,21 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+{% for tab_key, missions in tabs.items %}
+  {% with tab_title=tab_key|title is_active=forloop.first %}
+    {% if tab_key == "focus" %}
+      {% include "dashboard/_tab_missions.html" with tab_key=tab_key tab_title="Focus" tab_desc="Các nhiệm vụ lặp lại để tạo output cốt lõi mỗi ngày." missions=missions is_active=True %}
+    {% elif tab_key == "grow" %}
+      {% include "dashboard/_tab_missions.html" with tab_key=tab_key tab_title="Grow" tab_desc="Chuỗi hành động tăng reach, follower, và traffic về sản phẩm." missions=missions is_active=False %}
+    {% elif tab_key == "maintain" %}
+      {% include "dashboard/_tab_missions.html" with tab_key=tab_key tab_title="Maintain" tab_desc="Checklist vận hành để hệ thống chạy ổn định và không bị gián đoạn." missions=missions is_active=False %}
+    {% elif tab_key == "learn" %}
+      {% include "dashboard/_tab_missions.html" with tab_key=tab_key tab_title="Learn" tab_desc="Học có hệ thống, theo chu kỳ lặp để tích lũy kỹ năng dài hạn." missions=missions is_active=False %}
+    {% endif %}
+  {% endwith %}
+{% endfor %}
+
+{% include "dashboard/_tab_resources.html" %}
+{% include "dashboard/_tab_settings.html" %}
+{% include "dashboard/_tab_system.html" %}
+{% endblock %}

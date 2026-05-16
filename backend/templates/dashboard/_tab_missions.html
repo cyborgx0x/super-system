@@ -1,0 +1,14 @@
+<div class="tab-panel{% if is_active %} active{% endif %}" id="tab-{{ tab_key }}">
+  <div class="goal-header">
+    <div class="goal-title">{{ tab_title }} Missions</div>
+    <div class="goal-sub">{{ tab_desc }}</div>
+  </div>
+  <div class="mission-list">
+    {% include "dashboard/_mission.html" with missions=missions %}
+  </div>
+  {% if tab_key == "focus" %}
+  <p class="goal-summary">
+    Mẹo: Giữ 1-2 mission quan trọng hoàn thành mỗi ngày thay vì mở quá nhiều việc cùng lúc.
+  </p>
+  {% endif %}
+</div>

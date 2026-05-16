@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>X Connected</title>
+    <style>
+      :root {
+        --bg: #0d1117;
+        --surface: #161b22;
+        --border: #30363d;
+        --ink: #e6edf3;
+        --muted: #8b949e;
+        --blue: #58a6ff;
+        --green: #3fb950;
+        --red: #f85149;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+      }
+      .panel {
+        width: min(480px, calc(100vw - 32px));
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 32px 28px;
+        text-align: center;
+      }
+      .icon {
+        font-size: 40px;
+        margin-bottom: 16px;
+      }
+      h1 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .sub {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 24px;
+        line-height: 1.5;
+      }
+      .scope {
+        font-size: 12px;
+        color: var(--muted);
+        background: #0d1117;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 12px;
+        word-break: break-all;
+        text-align: left;
+        margin-bottom: 24px;
+      }
+      .scope strong {
+        color: var(--ink);
+        display: block;
+        margin-bottom: 4px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .error-box {
+        font-size: 12px;
+        color: var(--red);
+        background: rgba(248, 81, 73, 0.08);
+        border: 1px solid rgba(248, 81, 73, 0.3);
+        border-radius: 8px;
+        padding: 10px 14px;
+        text-align: left;
+        margin-bottom: 24px;
+        word-break: break-all;
+      }
+      .error-box strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+      .btn {
+        display: inline-block;
+        padding: 9px 20px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #1c2128;
+        color: var(--ink);
+        text-decoration: none;
+        font-size: 14px;
+      }
+      .btn:hover {
+        border-color: var(--blue);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="panel">
+      {% if success %}
+      <div class="icon">✓</div>
+      <h1>X account connected</h1>
+      <p class="sub">
+        Token saved. You can close this tab and return to the dashboard.
+      </p>
+      {% if scope %}
+      <div class="scope"><strong>Granted scopes</strong>{{ scope }}</div>
+      {% endif %}
+      <a class="btn" href="/">Go to dashboard</a>
+      {% else %}
+      <div class="icon">✗</div>
+      <h1>Connection failed</h1>
+      <p class="sub">Could not complete X OAuth.</p>
+      <div class="error-box">
+        <strong>{{ error }}</strong>
+        {% if detail %}{{ detail }}{% endif %}
+      </div>
+      <a class="btn" href="/">Back to dashboard</a>
+      {% endif %}
+    </div>
+  </body>
+</html>

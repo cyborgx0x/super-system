@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>X OAuth Callback</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #0d1117;
+        color: #e6edf3;
+        font-family: "Segoe UI", system-ui, sans-serif;
+      }
+      .panel {
+        width: min(760px, calc(100vw - 32px));
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 16px;
+        padding: 24px;
+      }
+      h1 {
+        margin: 0 0 10px;
+        font-size: 24px;
+      }
+      p {
+        color: #8b949e;
+      }
+      .box {
+        margin-top: 16px;
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 10px;
+        padding: 12px;
+        word-break: break-all;
+      }
+      .label {
+        font-size: 12px;
+        color: #58a6ff;
+        margin-bottom: 6px;
+      }
+      code {
+        color: #ffa657;
+      }
+      .ok {
+        color: #3fb950;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="panel">
+      <h1>X OAuth Callback</h1>
+      <p id="status">Trying to send callback data to opener window...</p>
+      <div class="box">
+        <div class="label">Authorization code</div>
+        <div id="code">Missing code</div>
+      </div>
+      <div class="box">
+        <div class="label">State</div>
+        <div id="state">Missing state</div>
+      </div>
+      <div class="box">
+        <div class="label">Fallback</div>
+        <code
+          >If auto-connect fails, copy code + state and paste back to
+          dashboard.</code
+        >
+      </div>
+    </div>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code") || "";
+      const state = params.get("state") || "";
+      const error = params.get("error") || "";
+      const statusEl = document.getElementById("status");
+
+      document.getElementById("code").textContent = code || "Missing code";
+      document.getElementById("state").textContent = state || "Missing state";
+
+      if (window.opener && !window.opener.closed) {
+        try {
+          window.opener.postMessage(
+            {
+              type: "x-oauth-callback",
+              code,
+              state,
+              error,
+              errorDescription: params.get("error_description") || "",
+            },
+            window.location.origin
+          );
+          statusEl.textContent =
+            "Callback sent to dashboard. You can close this window.";
+          statusEl.classList.add("ok");
+          setTimeout(() => window.close(), 400);
+        } catch (err) {
+          statusEl.textContent =
+            "Could not send callback automatically. Use fallback copy/paste.";
+        }
+      } else {
+        statusEl.textContent = "No opener detected. Use fallback copy/paste.";
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+[project]
+name = "super-system"
+version = "0.1.0"
+description = "Mission control dashboard with backend-memory OAuth connector orchestration"
+requires-python = ">=3.11"
+dependencies = [
+	"django>=5.1.0",
+	"djangorestframework>=3.16.0",
+]
+
+[tool.uv]
+package = false

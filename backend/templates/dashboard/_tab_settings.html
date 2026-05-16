@@ -1,0 +1,62 @@
+<div class="tab-panel" id="tab-settings">
+  <div class="goal-header">
+    <div class="goal-title">Connector Settings</div>
+    <div class="goal-sub">
+      Kết nối tài khoản trực tiếp từ dashboard. Token chỉ lưu trong
+      browser storage, không ghi vào file .env.
+    </div>
+  </div>
+
+  <div class="settings-shell">
+    <section class="settings-card">
+      <div class="settings-title">X OAuth Connect</div>
+      <p class="settings-note">
+        Nhập client ID và secret, bấm Connect để OAuth qua popup. Secret
+        chỉ dùng cho request hiện tại và không được lưu persistent.
+      </p>
+      <div class="form-grid">
+        <div class="field">
+          <label for="x-client-id">Client ID</label>
+          <input id="x-client-id" type="text" placeholder="X client id" autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="x-client-secret">Client Secret (optional)</label>
+          <input id="x-client-secret" type="password" placeholder="X client secret" autocomplete="off" />
+        </div>
+        <div class="field full">
+          <label for="x-scopes">Scopes</label>
+          <input id="x-scopes" type="text" value="tweet.read tweet.write users.read" autocomplete="off" />
+        </div>
+        <div class="field full">
+          <label for="x-redirect-uri">Redirect URI (must match X App exactly)</label>
+          <input id="x-redirect-uri" type="text" placeholder="https://api.pending.io.vn/x/callback" autocomplete="off" />
+        </div>
+      </div>
+      <div class="actions-row">
+        <button class="btn primary" id="x-connect-btn" type="button">Connect X</button>
+        <button class="btn" id="x-test-btn" type="button">Test Token</button>
+        <button class="btn danger" id="x-disconnect-btn" type="button">Disconnect</button>
+      </div>
+      <div class="settings-alert" id="x-alert">Ready.</div>
+    </section>
+
+    <aside class="settings-card">
+      <div class="settings-title">Vault Status</div>
+      <p class="settings-note">
+        Token vault nằm ở localStorage của trình duyệt hiện tại.
+      </p>
+      <span class="status-pill" id="x-status-pill">Not connected</span>
+      <div class="mini-kv">
+        <div class="mini-row">
+          <span class="label">Verified</span><span class="val" id="x-verified-at">-</span>
+        </div>
+        <div class="mini-row">
+          <span class="label">Scopes</span><span class="val" id="x-vault-scopes">-</span>
+        </div>
+        <div class="mini-row">
+          <span class="label">Token</span><span class="val" id="x-token-preview">-</span>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>

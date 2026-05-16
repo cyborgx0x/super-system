@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Workspace</title>
+    <link rel="stylesheet" href="/static/dashboard/style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <div class="header-inner">
+          <div class="logo">
+            <div class="logo-icon">🚀</div>
+            <div>
+              <h1>My Workspace</h1>
+              <div class="tagline">Workspace · nginx gateway on :80</div>
+            </div>
+          </div>
+          <div class="badge">
+            <span class="dot"></span>
+            All services up
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap">
+        <nav class="tab-bar">
+          <button class="tab-btn active" data-tab="focus">Focus</button>
+          <button class="tab-btn" data-tab="grow">Grow</button>
+          <button class="tab-btn" data-tab="maintain">Maintain</button>
+          <button class="tab-btn" data-tab="learn">Learn</button>
+          <button class="tab-btn" data-tab="resources">Resources</button>
+          <button class="tab-btn" data-tab="settings">Settings</button>
+          <button class="tab-btn" data-tab="system">⚔ System</button>
+        </nav>
+
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div class="footer-inner">
+          <p>
+            Run <code>docker compose up -d</code> from
+            <strong>E:/Projects</strong> to bring all services online.
+          </p>
+          <p style="color: var(--faint)">
+            All <code>*.localhost</code> domains → nginx-gateway :80
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/static/dashboard/app.js"></script>
+  </body>
+</html>

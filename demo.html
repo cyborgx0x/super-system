@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Super System — MVP Demo</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface-2: #1c2128;
+      --border: #30363d;
+      --ink: #e6edf3;
+      --muted: #8b949e;
+      --blue: #58a6ff;
+      --green: #3fb950;
+      --purple: #bc8cff;
+      --orange: #ffa657;
+      --yellow: #e3b341;
+      --red: #f85149;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── Layout ── */
+    .screen { display: none; min-height: 100vh; }
+    .screen.active { display: flex; flex-direction: column; }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface);
+    }
+    header .logo { font-weight: 700; font-size: 1rem; letter-spacing: .5px; }
+    header .logo span { color: var(--purple); }
+    header .breadcrumb { color: var(--muted); font-size: .85rem; margin-left: auto; }
+
+    .wrap { max-width: 720px; margin: 0 auto; padding: 40px 24px; width: 100%; }
+
+    /* ── Typography ── */
+    h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin-bottom: 16px; }
+    p { color: var(--muted); margin-bottom: 16px; font-size: .95rem; }
+
+    /* ── Form ── */
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-size: .85rem; font-weight: 600; margin-bottom: 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+    input, textarea, select {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--ink);
+      font-size: .95rem;
+      padding: 10px 14px;
+      outline: none;
+      font-family: inherit;
+      transition: border-color .15s;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--blue); }
+    textarea { resize: vertical; min-height: 120px; }
+    select option { background: var(--surface-2); }
+
+    .level-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .level-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: .85rem;
+      transition: all .15s;
+    }
+    .level-btn.selected { border-color: var(--purple); color: var(--purple); background: rgba(188,140,255,.1); }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .btn:hover { opacity: .85; }
+    .btn-primary { background: var(--blue); color: #000; }
+    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--ink); }
+    .btn-sm { padding: 7px 14px; font-size: .82rem; }
+    .btn-full { width: 100%; justify-content: center; margin-top: 8px; }
+
+    /* ── Task Cards ── */
+    .task-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .task-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      transition: border-color .15s, transform .1s;
+    }
+    .task-card:hover { border-color: var(--blue); transform: translateY(-1px); }
+
+    .task-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+    .task-title { font-weight: 600; font-size: 1rem; }
+    .task-reward { font-size: .8rem; color: var(--yellow); white-space: nowrap; font-weight: 600; }
+
+    .task-meta { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+    .badge {
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .3px;
+    }
+    .badge-output { background: rgba(63,185,80,.15); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+    .badge-feynman { background: rgba(88,166,255,.15); color: var(--blue); border: 1px solid rgba(88,166,255,.3); }
+    .badge-analysis { background: rgba(255,166,87,.15); color: var(--orange); border: 1px solid rgba(255,166,87,.3); }
+    .badge-rewrite { background: rgba(188,140,255,.15); color: var(--purple); border: 1px solid rgba(188,140,255,.3); }
+    .badge-main { background: rgba(227,179,65,.1); color: var(--yellow); border: 1px solid rgba(227,179,65,.3); }
+
+    .task-context { font-size: .88rem; color: var(--muted); }
+
+    /* ── Task Detail ── */
+    .task-detail-header { margin-bottom: 24px; }
+    .task-detail-header .task-meta { margin-bottom: 12px; }
+    .task-detail-header h1 { margin-bottom: 10px; }
+
+    .context-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--blue);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+    }
+    .context-box .context-label { font-size: .75rem; text-transform: uppercase; letter-spacing: .5px; color: var(--blue); font-weight: 700; margin-bottom: 6px; }
+    .context-box p { color: var(--ink); margin: 0; font-size: .92rem; }
+
+    .requirement-box {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 24px;
+    }
+    .requirement-box .req-label { font-size: .75rem; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); font-weight: 700; margin-bottom: 8px; }
+    .requirement-box ul { padding-left: 18px; }
+    .requirement-box li { font-size: .9rem; color: var(--ink); margin-bottom: 4px; }
+
+    .submit-area label { font-size: .85rem; font-weight: 600; margin-bottom: 8px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+    .word-count { font-size: .78rem; color: var(--muted); text-align: right; margin-top: 4px; }
+
+    .action-row { display: flex; gap: 10px; margin-top: 16px; }
+
+    /* ── Results ── */
+    .result-hero {
+      text-align: center;
+      padding: 32px 0 24px;
+    }
+    .result-hero .total-pts {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--yellow);
+      line-height: 1;
+    }
+    .result-hero .pts-label { font-size: .85rem; color: var(--muted); margin-top: 4px; }
+    .result-hero .skill-name { font-size: .9rem; color: var(--purple); margin-top: 2px; }
+
+    .score-grid { display: flex; flex-direction: column; gap: 14px; margin: 24px 0; }
+    .score-item {}
+    .score-header { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: .88rem; }
+    .score-name { font-weight: 600; }
+    .score-val { color: var(--muted); }
+    .score-bar { height: 6px; background: var(--surface-2); border-radius: 3px; overflow: hidden; }
+    .score-fill { height: 100%; border-radius: 3px; transition: width .6s ease; }
+    .fill-high { background: var(--green); }
+    .fill-mid { background: var(--yellow); }
+    .fill-low { background: var(--red); }
+
+    .feedback-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    .feedback-box .fb-label { font-size: .75rem; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); font-weight: 700; margin-bottom: 8px; }
+    .feedback-box p { color: var(--ink); margin: 0; font-size: .9rem; }
+
+    .next-target {
+      background: rgba(88,166,255,.08);
+      border: 1px solid rgba(88,166,255,.2);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+      font-size: .88rem;
+    }
+    .next-target strong { color: var(--blue); }
+
+    /* ── Progress ── */
+    .profile-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .profile-card h3 { font-size: .95rem; margin-bottom: 4px; }
+    .profile-card .level { font-size: .8rem; color: var(--purple); margin-bottom: 16px; }
+
+    .history-list { display: flex; flex-direction: column; gap: 8px; }
+    .history-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: .88rem;
+    }
+    .history-item .hi-title { flex: 1; }
+    .history-item .hi-pts { color: var(--yellow); font-weight: 700; font-size: .82rem; }
+    .history-item .hi-date { color: var(--muted); font-size: .78rem; }
+
+    /* ── Nav ── */
+    .bottom-nav {
+      display: flex;
+      gap: 4px;
+      padding: 12px 16px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+    .nav-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 8px 4px;
+      border-radius: 8px;
+      font-size: .75rem;
+      transition: all .15s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+    .nav-btn:hover, .nav-btn.active { color: var(--ink); background: var(--surface-2); }
+    .nav-btn .nav-icon { font-size: 1.1rem; }
+
+    /* ── Loading ── */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(13,17,23,.85);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .loading-overlay.show { display: flex; }
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--border);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { font-size: .9rem; color: var(--muted); }
+
+    /* ── Divider ── */
+    .section-label {
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 12px;
+      margin-top: 28px;
+    }
+
+    .empty { text-align: center; padding: 48px 0; color: var(--muted); font-size: .9rem; }
+
+    /* ── Level / XP Card ── */
+    .level-card {
+      background: linear-gradient(135deg, #1c2128 0%, #161b22 100%);
+      border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 20px;
+    }
+    .level-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+    .level-tag { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--purple); }
+    .streak-tag { font-size: .82rem; color: var(--orange); font-weight: 700; }
+    .level-name { font-size: 1.15rem; font-weight: 700; margin-bottom: 12px; }
+    .xp-bar-wrap { margin-bottom: 6px; }
+    .xp-bar-bg { height: 8px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+    .xp-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--purple), var(--blue)); transition: width .6s ease; }
+    .xp-label { display: flex; justify-content: space-between; font-size: .75rem; color: var(--muted); margin-top: 4px; }
+
+    .daily-target { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .daily-target-label { font-size: .75rem; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); font-weight: 700; margin-bottom: 8px; }
+    .daily-dots { display: flex; gap: 6px; align-items: center; }
+    .daily-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: .7rem; transition: all .2s; }
+    .daily-dot.done { background: var(--green); border-color: var(--green); color: #000; font-weight: 700; }
+    .daily-dot.pending { border-color: var(--border); color: var(--muted); }
+    .daily-count { font-size: .82rem; color: var(--muted); margin-left: 6px; }
+
+    /* ── Drill Category ── */
+    .drill-category { margin-bottom: 20px; }
+    .drill-cat-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .drill-cat-name { font-size: .82rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+    .drill-cat-count { font-size: .78rem; color: var(--muted); }
+    .drill-item {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 13px 15px; margin-bottom: 7px;
+      cursor: pointer; transition: border-color .15s;
+    }
+    .drill-item:hover { border-color: var(--green); }
+    .drill-item.done { opacity: .5; cursor: default; }
+    .drill-check { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: .7rem; }
+    .drill-item.done .drill-check { background: var(--green); border-color: var(--green); color: #000; }
+    .drill-info { flex: 1; }
+    .drill-title { font-size: .9rem; font-weight: 600; }
+    .drill-sub { font-size: .75rem; color: var(--muted); margin-top: 1px; }
+    .drill-xp { font-size: .78rem; color: var(--yellow); font-weight: 700; }
+
+    /* ── Profile ── */
+    .profile-hero {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 20px; margin-bottom: 16px;
+    }
+    .profile-avatar {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; flex-shrink: 0;
+    }
+    .profile-info .p-name { font-size: 1.05rem; font-weight: 700; }
+    .profile-info .p-sub { font-size: .8rem; color: var(--muted); margin-top: 2px; }
+    .profile-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .stat-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px; text-align: center;
+    }
+    .stat-val { font-size: 1.3rem; font-weight: 800; color: var(--ink); }
+    .stat-lbl { font-size: .72rem; color: var(--muted); margin-top: 2px; }
+
+    /* ── Academy ── */
+    .module-block { margin-bottom: 28px; }
+    .module-title {
+      font-size: .75rem; text-transform: uppercase; letter-spacing: .8px;
+      color: var(--muted); font-weight: 700; margin-bottom: 10px;
+    }
+    .lesson-card {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px 16px; margin-bottom: 8px;
+      cursor: pointer; transition: border-color .15s;
+    }
+    .lesson-card:hover { border-color: var(--blue); }
+    .lesson-card.locked { opacity: .45; cursor: not-allowed; }
+    .lesson-icon { font-size: 1.4rem; width: 36px; text-align: center; flex-shrink: 0; }
+    .lesson-info { flex: 1; }
+    .lesson-info .l-title { font-weight: 600; font-size: .92rem; margin-bottom: 2px; }
+    .lesson-info .l-meta { font-size: .78rem; color: var(--muted); }
+    .lesson-status { font-size: .75rem; font-weight: 700; }
+    .ls-done { color: var(--green); }
+    .ls-new { color: var(--blue); }
+    .ls-locked { color: var(--muted); }
+
+    /* ── Lesson Detail ── */
+    .lesson-content { font-size: .93rem; line-height: 1.8; }
+    .lesson-content h3 { font-size: 1rem; margin: 24px 0 8px; color: var(--ink); }
+    .lesson-content p { color: var(--ink); margin-bottom: 12px; }
+    .lesson-content blockquote {
+      border-left: 3px solid var(--purple); padding: 10px 16px;
+      background: rgba(188,140,255,.07); border-radius: 0 8px 8px 0;
+      margin: 12px 0; font-style: italic; color: var(--ink);
+    }
+    .lesson-content .example-bad { border-left-color: var(--red); background: rgba(248,81,73,.07); }
+    .lesson-content .example-good { border-left-color: var(--green); background: rgba(63,185,80,.07); }
+    .lesson-content .label { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+    .lesson-content .label.bad { color: var(--red); }
+    .lesson-content .label.good { color: var(--green); }
+    .lesson-tip {
+      background: rgba(88,166,255,.08); border: 1px solid rgba(88,166,255,.2);
+      border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-size: .88rem;
+    }
+    .lesson-tip strong { color: var(--blue); }
+
+    /* ── Practice Hall ── */
+    .practice-mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+    .mode-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px; cursor: pointer; transition: all .15s; text-align: center;
+    }
+    .mode-card:hover, .mode-card.selected { border-color: var(--purple); background: rgba(188,140,255,.07); }
+    .mode-card .mode-icon { font-size: 1.6rem; margin-bottom: 6px; }
+    .mode-card .mode-name { font-weight: 600; font-size: .88rem; }
+    .mode-card .mode-desc { font-size: .75rem; color: var(--muted); margin-top: 3px; }
+
+    .prompt-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+    .prompt-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px 14px; cursor: pointer; font-size: .88rem;
+      transition: border-color .15s; display: flex; align-items: center; gap: 10px;
+    }
+    .prompt-item:hover, .prompt-item.selected { border-color: var(--green); }
+    .prompt-item .p-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+    .prompt-item.selected .p-dot { background: var(--green); }
+
+    .timer-row { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .timer-btn {
+      padding: 7px 16px; border-radius: 20px; border: 1px solid var(--border);
+      background: transparent; color: var(--muted); cursor: pointer; font-size: .82rem; transition: all .15s;
+    }
+    .timer-btn.selected { border-color: var(--orange); color: var(--orange); background: rgba(255,166,87,.1); }
+
+    /* ── Practice Session ── */
+    .session-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 24px; background: var(--surface-2); border-bottom: 1px solid var(--border);
+      font-size: .85rem;
+    }
+    .session-timer { color: var(--orange); font-weight: 700; font-variant-numeric: tabular-nums; }
+    .session-wc { color: var(--muted); }
+    .session-prompt {
+      background: var(--surface); border: 1px solid var(--border);
+      border-left: 3px solid var(--green); border-radius: 8px;
+      padding: 12px 16px; margin-bottom: 16px; font-size: .88rem; color: var(--ink);
+    }
+    .session-textarea {
+      width: 100%; background: transparent; border: none; outline: none;
+      color: var(--ink); font-size: 1rem; font-family: inherit; line-height: 1.8;
+      resize: none; min-height: 55vh;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loading-text">Hệ thống đang chuẩn bị...</div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- SCREEN: ONBOARDING                       -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen active" id="screen-onboarding">
+  <header>
+    <div class="logo">⚡ <span>Super</span>System</div>
+  </header>
+  <div class="wrap">
+    <h1>Khởi động hệ thống</h1>
+    <p>Điền thông tin để hệ thống cá nhân hóa hành trình của bạn.</p>
+
+    <div class="form-group">
+      <label>Kỹ năng bạn muốn thuần thục</label>
+      <select id="ob-skill">
+        <option value="writing">Viết lách</option>
+        <option value="music" disabled>Âm nhạc (sắp ra mắt)</option>
+        <option value="cooking" disabled>Nấu ăn (sắp ra mắt)</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Mục tiêu của bạn là gì?</label>
+      <input type="text" id="ob-goal" placeholder="Vd: Viết được truyện ngắn, viết content chuyên nghiệp..." />
+    </div>
+
+    <div class="form-group">
+      <label>Bối cảnh cuộc sống hiện tại</label>
+      <textarea id="ob-context" placeholder="Vd: Tôi làm kế toán, hay phải viết email, muốn viết blog buổi tối sau giờ làm..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Mức độ kinh nghiệm hiện tại</label>
+      <div class="level-row" id="level-row">
+        <button class="level-btn selected" data-level="beginner">Mới bắt đầu</button>
+        <button class="level-btn" data-level="some">Đã biết cơ bản</button>
+        <button class="level-btn" data-level="intermediate">Trung cấp</button>
+        <button class="level-btn" data-level="advanced">Nâng cao</button>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-full" onclick="startSystem()">
+      ⚡ Kích hoạt hệ thống
+    </button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- SCREEN: TASK LIST                        -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen" id="screen-tasks">
+  <header>
+    <div class="logo">⚡ <span>Super</span>System</div>
+    <div class="breadcrumb" id="header-xp">0 điểm thuần thục</div>
+  </header>
+  <div class="wrap">
+    <h1>Nhiệm vụ</h1>
+    <p>Các mốc lớn trên hành trình thuần thục kỹ năng của bạn.</p>
+    <div class="task-list" id="main-quest-list"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-btn active" onclick="showTasks()"><span class="nav-icon">⚔️</span>Nhiệm vụ</button>
+    <button class="nav-btn" onclick="showPractice()"><span class="nav-icon">🏋️</span>Luyện tập</button>
+    <button class="nav-btn" onclick="showAcademy()"><span class="nav-icon">🎓</span>Học viện</button>
+    <button class="nav-btn" onclick="showProfile()"><span class="nav-icon">👤</span>Profile</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- SCREEN: TASK DETAIL                      -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen" id="screen-detail">
+  <header>
+    <div class="logo">⚡ <span>Super</span>System</div>
+    <button class="btn btn-ghost btn-sm" onclick="backFromDetail()" style="margin-left:auto">← Quay lại</button>
+  </header>
+  <div class="wrap">
+    <div class="task-detail-header">
+      <div class="task-meta" id="detail-meta"></div>
+      <h1 id="detail-title"></h1>
+    </div>
+
+    <div class="context-box">
+      <div class="context-label">Bối cảnh</div>
+      <p id="detail-context"></p>
+    </div>
+
+    <div class="requirement-box">
+      <div class="req-label">Yêu cầu</div>
+      <ul id="detail-requirements"></ul>
+    </div>
+
+    <div class="submit-area">
+      <label>Bài làm của bạn</label>
+      <textarea id="submission-text" rows="10" placeholder="Nhập bài làm tại đây..." oninput="updateWordCount()"></textarea>
+      <div class="word-count" id="word-count">0 từ</div>
+    </div>
+
+    <div class="action-row">
+      <button class="btn btn-ghost" onclick="backFromDetail()">Để sau</button>
+      <button class="btn btn-primary" onclick="submitTask()" style="flex:1">Nộp bài →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- SCREEN: RESULT                           -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen" id="screen-result">
+  <header>
+    <div class="logo">⚡ <span>Super</span>System</div>
+  </header>
+  <div class="wrap">
+    <div class="result-hero">
+      <div class="total-pts" id="result-total">+3</div>
+      <div class="pts-label">điểm thuần thục nhận được</div>
+      <div class="skill-name" id="result-skill-name"></div>
+    </div>
+
+    <div class="score-grid" id="score-grid"></div>
+
+    <div class="feedback-box">
+      <div class="fb-label">Nhận xét từ hệ thống</div>
+      <p id="result-feedback"></p>
+    </div>
+
+    <div class="next-target" id="next-target"></div>
+
+    <button class="btn btn-primary btn-full" onclick="backAfterResult()">Tiếp tục →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- SCREEN: PROFILE                          -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen" id="screen-progress">
+  <header>
+    <div class="logo">⚡ <span>Super</span>System</div>
+  </header>
+  <div class="wrap">
+    <div class="profile-hero">
+      <div class="profile-avatar">✍️</div>
+      <div class="profile-info">
+        <div class="p-name" id="profile-name">Người học</div>
+        <div class="p-sub" id="profile-goal">Mục tiêu chưa thiết lập</div>
+      </div>
+    </div>
+
+    <div class="profile-stats">
+      <div class="stat-box"><div class="stat-val" id="stat-xp">0</div><div class="stat-lbl">Tổng XP</div></div>
+      <div class="stat-box"><div class="stat-val" id="stat-streak">🔥 0</div><div class="stat-lbl">Ngày liên tiếp</div></div>
+      <div class="stat-box"><div class="stat-val" id="stat-done">0</div><div class="stat-lbl">Đã hoàn thành</div></div>
+    </div>
+
+    <div class="section-label">Kỹ năng viết lách</div>
+    <div class="profile-card" style="padding:16px">
+      <div class="level" id="progress-level" style="margin-bottom:12px">Level 1 — Người mới bắt đầu</div>
+      <div class="score-grid" id="progress-skill-grid"></div>
+    </div>
+
+    <div class="section-label">Lịch sử</div>
+    <div class="history-list" id="history-list"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-btn" onclick="showTasks()"><span class="nav-icon">⚔️</span>Nhiệm vụ</button>
+    <button class="nav-btn" onclick="showPractice()"><span class="nav-icon">🏋️</span>Luyện tập</button>
+    <button class="nav-btn" onclick="showAcademy()"><span class="nav-icon">🎓</span>Học viện</button>
+    <button class="nav-btn active" onclick="showProfile()"><span class="nav-icon">👤</span>Profile</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- SCREEN: PRACTICE HALL                    -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen" id="screen-practice">
+  <header>
+    <div class="logo">⚡ <span>Super</span>System</div>
+    <div class="breadcrumb">Sảnh luyện tập</div>
+  </header>
+  <div class="wrap">
+    <!-- Level + XP card -->
+    <div class="level-card" id="practice-level-card"></div>
+
+    <!-- Drill list by category -->
+    <div id="drill-list"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-btn" onclick="showTasks()"><span class="nav-icon">⚔️</span>Nhiệm vụ</button>
+    <button class="nav-btn active" onclick="showPractice()"><span class="nav-icon">🏋️</span>Luyện tập</button>
+    <button class="nav-btn" onclick="showAcademy()"><span class="nav-icon">🎓</span>Học viện</button>
+    <button class="nav-btn" onclick="showProfile()"><span class="nav-icon">👤</span>Profile</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- SCREEN: PRACTICE SESSION                 -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen" id="screen-practice-session">
+  <header>
+    <div class="logo">⚡ <span>Super</span>System</div>
+    <button class="btn btn-ghost btn-sm" onclick="endPractice()" style="margin-left:auto">Kết thúc</button>
+  </header>
+  <div class="session-bar">
+    <span class="session-timer" id="session-timer">—</span>
+    <span class="session-wc" id="session-wc">0 từ</span>
+  </div>
+  <div class="wrap" style="padding-top:24px">
+    <div class="session-prompt" id="session-prompt"></div>
+    <textarea class="session-textarea" id="session-textarea" placeholder="Bắt đầu viết..." oninput="onSessionInput()"></textarea>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- SCREEN: ACADEMY                          -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen" id="screen-academy">
+  <header>
+    <div class="logo">⚡ <span>Super</span>System</div>
+    <div class="breadcrumb">Học viện</div>
+  </header>
+  <div class="wrap">
+    <h1>Học viện</h1>
+    <p>Học lý thuyết trước, luyện tập sau. Hoặc quay lại ôn tập bất cứ lúc nào.</p>
+    <div id="academy-modules"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-btn" onclick="showTasks()"><span class="nav-icon">⚔️</span>Nhiệm vụ</button>
+    <button class="nav-btn" onclick="showPractice()"><span class="nav-icon">🏋️</span>Luyện tập</button>
+    <button class="nav-btn active" onclick="showAcademy()"><span class="nav-icon">🎓</span>Học viện</button>
+    <button class="nav-btn" onclick="showProfile()"><span class="nav-icon">👤</span>Profile</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- SCREEN: LESSON DETAIL                    -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen" id="screen-lesson">
+  <header>
+    <div class="logo">⚡ <span>Super</span>System</div>
+    <button class="btn btn-ghost btn-sm" onclick="showAcademy()" style="margin-left:auto">← Học viện</button>
+  </header>
+  <div class="wrap">
+    <div class="task-meta" id="lesson-meta" style="margin-bottom:12px"></div>
+    <h1 id="lesson-title" style="margin-bottom:20px"></h1>
+    <div class="lesson-content" id="lesson-content"></div>
+    <div style="margin-top:32px;display:flex;gap:10px">
+      <button class="btn btn-ghost" onclick="showAcademy()">Quay lại</button>
+      <button class="btn btn-primary" onclick="goToPracticeFromLesson()" style="flex:1">Vào sảnh luyện tập →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Academy Mock Data ─────────────────────────────────────────────────────
+
+const MOCK_ACADEMY = [
+  {
+    module: 'Nền tảng viết lách',
+    lessons: [
+      {
+        id: 'L1', icon: '👁️', title: 'Show, Don\'t Tell',
+        meta: '5 phút đọc', status: 'done',
+        content: `
+          <p>"Show, don't tell" là nguyên tắc vàng trong viết lách: thay vì <em>nói cho độc giả biết</em> nhân vật cảm thấy gì, hãy <em>cho họ thấy</em> thông qua hành động, chi tiết giác quan và phản ứng cụ thể.</p>
+          <h3>Tại sao cần điều này?</h3>
+          <p>Khi bạn "tell" (kể), não độc giả tiếp nhận thông tin thụ động. Khi bạn "show" (tả), não độc giả phải tự suy luận — và chính quá trình đó tạo ra cảm xúc thực sự.</p>
+          <h3>Ví dụ so sánh</h3>
+          <div class="label bad">❌ Tell</div>
+          <blockquote class="example-bad">Cô ấy rất buồn khi nghe tin đó.</blockquote>
+          <div class="label good">✓ Show</div>
+          <blockquote class="example-good">Cô ấy đặt điện thoại xuống bàn, nhìn chằm chằm vào ly cà phê đang nguội. Tay cô chạm vào vành ly rồi lại buông ra.</blockquote>
+          <h3>Cách luyện tập</h3>
+          <p>Mỗi khi bạn viết một từ cảm xúc trực tiếp (buồn, vui, tức, sợ...), hãy dừng lại và hỏi: <em>"Cảm xúc này biểu hiện ra ngoài như thế nào?"</em> Rồi xóa từ đó và thay bằng chi tiết cụ thể.</p>
+          <div class="lesson-tip"><strong>💡 Ghi nhớ:</strong> Không có quy tắc tuyệt đối — đôi khi "tell" là lựa chọn đúng khi bạn muốn tóm lược nhanh. Vấn đề là biết khi nào nên dùng cái nào.</div>
+        `
+      },
+      {
+        id: 'L2', icon: '🌀', title: 'Narrative Tension — Sức căng tường thuật',
+        meta: '6 phút đọc', status: 'done',
+        content: `
+          <p>Narrative tension là lý do độc giả tiếp tục đọc. Đó là cảm giác <em>"chuyện gì sẽ xảy ra tiếp theo?"</em> — không nhất thiết phải có cảnh hành động, chỉ cần có câu hỏi chưa được trả lời.</p>
+          <h3>3 nguồn tạo tension</h3>
+          <p><strong>1. Xung đột bên ngoài:</strong> Nhân vật đối mặt với trở ngại vật lý hoặc tình huống.</p>
+          <p><strong>2. Xung đột bên trong:</strong> Nhân vật muốn hai thứ mâu thuẫn với nhau.</p>
+          <p><strong>3. Thông tin bị giữ lại:</strong> Độc giả biết sẽ có điều gì đó xảy ra, nhưng chưa biết khi nào.</p>
+          <h3>Ví dụ</h3>
+          <blockquote>"Cô ấy mở phong bì. Tên của ai sẽ được gọi — cô ấy hay em gái?"</blockquote>
+          <p>Chỉ hai câu, nhưng đủ để giữ bạn đọc tiếp.</p>
+          <div class="lesson-tip"><strong>💡 Thử nghiệm:</strong> Đọc lại đoạn văn bạn vừa viết và hỏi: "Có câu hỏi nào chưa được trả lời không?" Nếu không, tension của bạn đang thấp.</div>
+        `
+      },
+      {
+        id: 'L3', icon: '🏗️', title: 'Cấu trúc đoạn văn',
+        meta: '4 phút đọc', status: 'unread',
+        content: `
+          <p>Một đoạn văn tốt có cấu trúc rõ ràng: câu chủ đề → phát triển → câu kết. Nhưng trong văn sáng tạo, cấu trúc linh hoạt hơn — điều quan trọng là mỗi đoạn phải có <em>một nhiệm vụ duy nhất</em>.</p>
+          <h3>Nguyên tắc một ý một đoạn</h3>
+          <p>Nếu bạn thấy một đoạn đang làm hai việc khác nhau — mô tả cảnh quan và đồng thời phát triển nội tâm nhân vật — hãy tách ra. Mỗi việc xứng đáng được không gian riêng.</p>
+          <h3>Độ dài đoạn văn</h3>
+          <p>Đoạn ngắn = nhịp nhanh, căng thẳng. Đoạn dài = nhịp chậm, suy tư. Kiểm soát độ dài đoạn là cách kiểm soát nhịp đọc của người đọc.</p>
+          <div class="lesson-tip"><strong>💡 Bài tập:</strong> Lấy một đoạn văn bạn đã viết và đếm xem nó đang làm bao nhiêu việc cùng lúc.</div>
+        `
+      },
+    ]
+  },
+  {
+    module: 'Giọng văn & Cảm xúc',
+    lessons: [
+      {
+        id: 'L4', icon: '🎭', title: 'Tìm giọng văn của bạn',
+        meta: '7 phút đọc', status: 'unread',
+        content: `
+          <p>Giọng văn là thứ làm cho bài viết của bạn nghe như <em>bạn</em> — không phải ai khác. Nó là tổng hợp của cách bạn chọn từ, cấu trúc câu, những gì bạn chú ý và những gì bạn bỏ qua.</p>
+          <h3>Giọng văn không phải là phong cách bắt chước</h3>
+          <p>Nhiều người mới học viết cố gắng viết như tác giả họ ngưỡng mộ. Điều đó tốt cho việc học kỹ thuật — nhưng giọng văn thực sự của bạn chỉ xuất hiện khi bạn ngừng cố gắng viết như người khác.</p>
+          <h3>Cách tìm giọng văn</h3>
+          <p>Viết về những thứ bạn thực sự quan tâm, theo cách bạn thực sự nghĩ — không chỉnh sửa ngay. Đọc lại sau 24 giờ và tìm những câu nghe "đúng" nhất. Đó là giọng văn của bạn.</p>
+          <div class="lesson-tip"><strong>💡 Thử nghiệm:</strong> Viết một đoạn kể về ngày hôm qua như thể bạn đang nhắn tin cho bạn thân. Sau đó viết lại chủ đề đó theo kiểu "văn học". So sánh hai bản — cái nào nghe thật hơn?</div>
+        `
+      },
+      {
+        id: 'L5', icon: '🥁', title: 'Nhịp câu & kiểm soát tempo',
+        meta: '5 phút đọc', status: 'unread',
+        content: `
+          <p>Nhịp câu là âm nhạc của văn xuôi. Câu ngắn gõ mạnh. Câu dài trôi chảy, kéo dãn thời gian, cho phép độc giả thở và suy nghĩ trước khi đến ý tiếp theo.</p>
+          <h3>Khi nào dùng câu ngắn</h3>
+          <p>Cảnh hành động, căng thẳng, cảm xúc đột ngột — câu ngắn tạo ra nhịp tim nhanh. Độc giả đọc theo nhịp của câu mà không nhận ra.</p>
+          <h3>Khi nào dùng câu dài</h3>
+          <p>Mô tả cảnh quan, suy tư nội tâm, hồi tưởng — câu dài cho phép não độc giả đắm chìm, mất đi cảm giác thời gian thực.</p>
+          <div class="label bad">❌ Đơn điệu</div>
+          <blockquote class="example-bad">Anh ấy chạy. Anh ấy vấp. Anh ấy ngã. Anh ấy đứng dậy. Anh ấy chạy tiếp.</blockquote>
+          <div class="label good">✓ Có nhịp</div>
+          <blockquote class="example-good">Anh ấy chạy. Vấp. Ngã — đầu gối chạm nhựa đường với tiếng bốp tối tăm. Rồi anh đứng dậy và chạy tiếp, không nhìn lại.</blockquote>
+        `
+      },
+    ]
+  },
+  {
+    module: 'Kỹ thuật nâng cao',
+    lessons: [
+      {
+        id: 'L6', icon: '🔒', title: 'Subtext & Ẩn ý',
+        meta: '8 phút đọc', status: 'locked',
+        content: ''
+      },
+      {
+        id: 'L7', icon: '🔒', title: 'Điểm nhìn & Perspective',
+        meta: '6 phút đọc', status: 'locked',
+        content: ''
+      },
+    ]
+  },
+];
+
+const MOCK_PROMPTS = [
+  'Một người ngồi chờ ở bến xe, lần đầu tiên trong 5 năm không có điện thoại trong tay.',
+  'Buổi sáng đầu tiên sau khi nghỉ việc — không có báo thức.',
+  'Hai người bạn cũ gặp lại, cả hai đều giả vờ mọi thứ vẫn như xưa.',
+  'Một đứa trẻ giải thích cho ông nội hiểu tại sao bầu trời màu xanh.',
+  'Người cuối cùng rời văn phòng vào buổi tối thứ Sáu.',
+  'Viết về một mùi hương gợi nhớ ký ức cụ thể.',
+];
+
+const MOCK_REWRITE_PROMPTS = [
+  '"Cô ấy buồn. Cô ấy về nhà. Cô ấy không ăn tối. Cô ấy đi ngủ sớm."',
+  '"Anh tức giận. Anh đóng cửa lại. Anh không nói gì thêm."',
+  '"Buổi sáng đẹp. Chim hót. Hoa nở. Mọi người vui vẻ đi làm."',
+];
+
+// ── Practice State ─────────────────────────────────────────────────────────
+
+const practiceState = {
+  mode: 'freestyle',
+  selectedPrompt: null,
+  timerMinutes: 0,
+  timerInterval: null,
+  secondsLeft: 0,
+};
+
+// ── Academy Mock Data ─────────────────────────────────────────────────────
+
+// Main quests: big milestones
+const MOCK_TASKS = {
+  main: [
+    {
+      id: 1, type: 'output', quest: 'main',
+      title: '🏆 Mốc 1 — Bài viết đầu tiên có hồn',
+      context: 'Viết một đoạn văn 500 từ về một khoảnh khắc khó quên trong cuộc đời bạn. Đây là bài kiểm tra đầu tiên để hệ thống xác định level xuất phát của bạn.',
+      requirements: ['Tối thiểu 500 từ', 'Viết theo ngôi thứ nhất', 'Ít nhất một chi tiết giác quan (âm thanh, mùi, xúc giác)', 'Không kể sự kiện — hãy dựng lại khoảnh khắc'],
+      reward: '+5 XP + Mở khoá cấp độ 2', rewardPts: 5, targetDimension: 'Cảm xúc & giọng văn',
+    },
+    {
+      id: 2, type: 'output', quest: 'main',
+      title: '🏆 Mốc 2 — Câu chuyện ngắn hoàn chỉnh',
+      context: 'Viết một câu chuyện ngắn hoàn chỉnh (mở đầu, xung đột, kết) trong 800 từ. Nhân vật của bạn phải đưa ra một quyết định khó khăn.',
+      requirements: ['800–1000 từ', 'Có 3 phần rõ ràng: setup, xung đột, resolution', 'Nhân vật chính phải thay đổi hoặc học được điều gì đó', 'Kết thúc không được "hạnh phúc mãi mãi" hoặc "tỉnh dậy ra là mơ"'],
+      reward: '+8 XP + Mở khoá kỹ thuật nâng cao', rewardPts: 8, targetDimension: 'Cấu trúc & mạch lạc',
+    },
+  ],
+};
+
+// Practice drills: daily tasks by dimension
+const MOCK_DRILLS = [
+  {
+    category: '✍️ Cảm xúc & giọng văn', dimension: 'Cảm xúc & giọng văn', dailyTarget: 2,
+    drills: [
+      { id: 10, type: 'rewrite', title: 'Sửa bài — thêm cảm xúc', sub: 'Rewrite đoạn văn flat thành có chiều sâu', xp: '+3 XP',
+        context: '"Anh ấy bước vào phòng. Anh ấy nhìn tôi. Anh ấy không nói gì. Anh ấy ra đi."\n\nRewrite đoạn này để người đọc cảm nhận được sự căng thẳng và cảm xúc phức tạp.',
+        requirements: ['Giữ nguyên cốt lõi sự kiện', 'Thêm chi tiết cảm xúc, giác quan, nội tâm', 'Không dùng từ "buồn", "vui", "tức" trực tiếp'], rewardPts: 3 },
+      { id: 11, type: 'output', title: 'Viết cảnh chia tay không nước mắt', sub: 'Show emotion without naming it', xp: '+3 XP',
+        context: 'Viết một cảnh chia tay (người yêu, bạn thân, hoặc rời công việc). Người đọc phải cảm nhận được nỗi buồn — nhưng bạn không được dùng bất kỳ từ cảm xúc nào.',
+        requirements: ['150–250 từ', 'Không dùng: buồn, đau, tiếc, nhớ, thương', 'Dùng hành động và chi tiết vật lý để truyền cảm xúc'], rewardPts: 3 },
+    ]
+  },
+  {
+    category: '🏗️ Cấu trúc & mạch lạc', dimension: 'Cấu trúc & mạch lạc', dailyTarget: 1,
+    drills: [
+      { id: 12, type: 'analysis', title: 'Phân tích đoạn văn rời rạc', sub: 'Chỉ ra điểm yếu về mạch lạc', xp: '+2 XP',
+        context: 'Đọc đoạn văn dưới đây và chỉ ra những điểm chưa tốt về mạch lạc và cấu trúc.\n\n"Hôm nay tôi đi làm. Trời mưa. Tôi bị ướt. Sếp mắng tôi vì đến trễ. Tôi về nhà và ăn cơm. Tôi ngủ sớm vì mệt."',
+        requirements: ['Chỉ ra ít nhất 3 điểm yếu', 'Giải thích tại sao', 'Đề xuất cách cải thiện'], rewardPts: 2 },
+    ]
+  },
+  {
+    category: '🧠 Hiểu khái niệm', dimension: 'Hiểu khái niệm sâu', dailyTarget: 1,
+    drills: [
+      { id: 13, type: 'feynman', title: 'Feynman: Narrative tension', sub: 'Giải thích như thể dạy cho người mới', xp: '+2 XP',
+        context: 'Giải thích khái niệm "narrative tension" (sức căng tường thuật) như thể bạn đang giải thích cho một người chưa biết gì về viết lách.',
+        requirements: ['Dùng ngôn ngữ bình thường', 'Lấy ví dụ từ cuộc sống hàng ngày', 'Tối thiểu 150 từ'], rewardPts: 2 },
+    ]
+  },
+];
+
+// All drills flat lookup
+const ALL_DRILLS = MOCK_DRILLS.flatMap(c => c.drills);
+
+const MOCK_RESULTS = {
+  1:  { total: 5,  skillName: 'Viết lách — Cảm xúc & giọng văn',  scores: [{ name: 'Cảm xúc & giọng văn', score: 65 }, { name: 'Cấu trúc & mạch lạc', score: 72 }, { name: 'Từ vựng & diễn đạt', score: 58 }], feedback: 'Bạn đã thể hiện được cảm xúc nội tâm qua chi tiết cụ thể — đây là điểm tốt. Tuy nhiên mạch truyện còn nhảy cóc, từ vựng đơn điệu.', nextTarget: 'Hệ thống sẽ tập trung vào <strong>từ vựng & diễn đạt</strong> trong luyện tập tiếp theo.', origin: 'tasks' },
+  2:  { total: 8,  skillName: 'Viết lách — Cấu trúc & mạch lạc',  scores: [{ name: 'Nhận diện vấn đề', score: 80 }, { name: 'Giải thích rõ ràng', score: 60 }, { name: 'Đề xuất cụ thể', score: 45 }], feedback: 'Cấu trúc 3 phần rõ ràng. Nhân vật phát triển tốt. Kết thúc mở gây ấn tượng.', nextTarget: 'Mốc tiếp theo: <strong>kỹ thuật nâng cao</strong> đã được mở khoá.', origin: 'tasks' },
+  10: { total: 3,  skillName: 'Cảm xúc & giọng văn', scores: [{ name: 'Cảm xúc & giọng văn', score: 82 }, { name: 'Show don\'t tell', score: 78 }, { name: 'Chi tiết cụ thể', score: 85 }], feedback: 'Xuất sắc! Chi tiết giác quan rõ nét. Chỉ cần chú ý nhịp câu — một số câu còn quá dài.', nextTarget: 'Điểm yếu tiếp theo: <strong>nhịp câu & kiểm soát tempo</strong>.', origin: 'practice' },
+  11: { total: 3,  skillName: 'Cảm xúc & giọng văn', scores: [{ name: 'Cảm xúc ẩn', score: 75 }, { name: 'Chi tiết vật lý', score: 80 }, { name: 'Nhịp câu', score: 68 }], feedback: 'Cảnh chia tay có chiều sâu. Chi tiết "chiếc áo khoác trên ghế" rất đắt. Nhịp câu cuối có thể ngắn hơn để tạo impact.', nextTarget: 'Luyện thêm: <strong>kiểm soát nhịp câu</strong>.', origin: 'practice' },
+  12: { total: 2,  skillName: 'Cấu trúc & mạch lạc', scores: [{ name: 'Nhận diện vấn đề', score: 80 }, { name: 'Giải thích rõ ràng', score: 60 }, { name: 'Đề xuất cụ thể', score: 45 }], feedback: 'Bạn nhận ra được các vấn đề về sự rời rạc. Phần đề xuất cải thiện chưa đủ cụ thể.', nextTarget: 'Luyện thêm: <strong>rewrite câu nối</strong>.', origin: 'practice' },
+  13: { total: 2,  skillName: 'Hiểu khái niệm sâu', scores: [{ name: 'Diễn giải đúng', score: 88 }, { name: 'Ví dụ thực tế', score: 75 }, { name: 'Ngôn ngữ dễ hiểu', score: 90 }], feedback: 'Giải thích rõ ràng, ví dụ gần gũi. Có thể đi sâu hơn vào cách tạo tension.', nextTarget: 'Chuyển sang bài thực hành <strong>tạo tension trong văn viết</strong>.', origin: 'practice' },
+};
+
+// ── State ──────────────────────────────────────────────────────────────────
+
+const state = {
+  totalXP: 0, streak: 3,
+  currentTaskId: null, taskOrigin: 'tasks',
+  completedTasks: [], completedTasksData: [],
+  dailyDone: {},   // drillId → true
+  skillScores: { 'Cảm xúc & giọng văn': 0, 'Cấu trúc & mạch lạc': 0, 'Từ vựng & diễn đạt': 0, 'Hiểu khái niệm sâu': 0 },
+  profile: { name: 'Người học', goal: '' },
+};
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function showLoading(text = 'Hệ thống đang xử lý...', duration = 1800) {
+  const el = document.getElementById('loading');
+  document.getElementById('loading-text').textContent = text;
+  el.classList.add('show');
+  return new Promise(resolve => setTimeout(() => { el.classList.remove('show'); resolve(); }, duration));
+}
+
+function badgeClass(type) {
+  return { output: 'badge-output', feynman: 'badge-feynman', analysis: 'badge-analysis', rewrite: 'badge-rewrite' }[type] || '';
+}
+
+function badgeLabel(type) {
+  return { output: 'Output', feynman: 'Feynman', analysis: 'Phân tích', rewrite: 'Sửa bài' }[type] || type;
+}
+
+function fillColor(score) {
+  if (score >= 75) return 'fill-high';
+  if (score >= 50) return 'fill-mid';
+  return 'fill-low';
+}
+
+function wordCount(text) {
+  return text.trim() ? text.trim().split(/\s+/).length : 0;
+}
+
+// ── Level Buttons ──────────────────────────────────────────────────────────
+
+document.getElementById('level-row').addEventListener('click', e => {
+  if (!e.target.classList.contains('level-btn')) return;
+  document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('selected'));
+  e.target.classList.add('selected');
+});
+
+// ── Actions ────────────────────────────────────────────────────────────────
+
+async function startSystem() {
+  state.profile.name = document.getElementById('ob-goal').value.trim() ? 'Người học' : 'Người học';
+  state.profile.goal = document.getElementById('ob-goal').value.trim();
+  await showLoading('Hệ thống đang phân tích hồ sơ của bạn...', 2200);
+  renderTaskList();
+  showScreen('screen-tasks');
+}
+
+function renderTaskList() {
+  document.getElementById('header-xp').textContent = `${state.totalXP} XP`;
+  document.getElementById('main-quest-list').innerHTML = MOCK_TASKS.main.map(task => {
+    const done = state.completedTasks.includes(task.id);
+    return `
+      <div class="task-card" onclick="${done ? '' : `openTask(${task.id})`}" style="${done ? 'opacity:.45;cursor:default' : ''}">
+        <div class="task-card-top">
+          <div class="task-title">${task.title}</div>
+          <div class="task-reward" style="color:${done ? 'var(--green)' : 'var(--yellow)'}">${done ? '✓ Hoàn thành' : task.reward}</div>
+        </div>
+        <div class="task-meta">
+          <span class="badge badge-main">Nhiệm vụ</span>
+          <span class="badge ${badgeClass(task.type)}">${badgeLabel(task.type)}</span>
+        </div>
+        <div class="task-context">${task.context.substring(0, 110)}...</div>
+      </div>`;
+  }).join('');
+}
+
+function openTask(id) {
+  const task = MOCK_TASKS.main.find(t => t.id === id) || ALL_DRILLS.find(t => t.id === id);
+  if (!task) return;
+  state.currentTaskId = id;
+  state.taskOrigin = MOCK_TASKS.main.find(t => t.id === id) ? 'tasks' : 'practice';
+
+  document.getElementById('detail-title').textContent = task.title;
+  document.getElementById('detail-meta').innerHTML = `
+    <span class="badge ${badgeClass(task.type)}">${badgeLabel(task.type)}</span>
+    ${task.quest === 'main' ? '<span class="badge badge-main">Nhiệm vụ</span>' : '<span class="badge badge-output" style="background:rgba(63,185,80,.1);color:var(--green)">Luyện tập</span>'}
+    <span style="font-size:.8rem;color:var(--muted)">Phần thưởng: ${task.reward || task.xp}</span>
+  `;
+  document.getElementById('detail-context').textContent = task.context;
+  document.getElementById('detail-requirements').innerHTML = task.requirements.map(r => `<li>${r}</li>`).join('');
+  document.getElementById('submission-text').value = '';
+  document.getElementById('word-count').textContent = '0 từ';
+
+  showScreen('screen-detail');
+}
+
+function backFromDetail() {
+  state.taskOrigin === 'practice' ? showPractice() : showTasks();
+}
+
+function backAfterResult() {
+  state.taskOrigin === 'practice' ? showPractice() : showTasks();
+}
+
+function updateWordCount() {
+  const text = document.getElementById('submission-text').value;
+  document.getElementById('word-count').textContent = `${wordCount(text)} từ`;
+}
+
+async function submitTask() {
+  const text = document.getElementById('submission-text').value.trim();
+  if (text.length < 20) {
+    document.getElementById('submission-text').style.borderColor = 'var(--red)';
+    setTimeout(() => document.getElementById('submission-text').style.borderColor = '', 1500);
+    return;
+  }
+
+  await showLoading('Hệ thống đang chấm bài...', 2500);
+
+  const result = MOCK_RESULTS[state.currentTaskId];
+  const task = MOCK_TASKS.main.find(t => t.id === state.currentTaskId) || ALL_DRILLS.find(t => t.id === state.currentTaskId);
+
+  state.totalXP += result.total;
+  state.completedTasks.push(state.currentTaskId);
+  if (state.taskOrigin === 'practice') state.dailyDone[state.currentTaskId] = true;
+  const dim = task.targetDimension || task.dimension || MOCK_DRILLS.find(c => c.drills.find(d => d.id === state.currentTaskId))?.dimension;
+  if (dim) state.skillScores[dim] = (state.skillScores[dim] || 0) + result.total;
+  state.completedTasksData.push({ title: task.title, pts: result.total, type: task.type, origin: state.taskOrigin });
+
+  document.getElementById('result-total').textContent = `+${result.total}`;
+  document.getElementById('result-skill-name').textContent = result.skillName;
+  document.getElementById('result-feedback').textContent = result.feedback;
+  document.getElementById('next-target').innerHTML = `🎯 ${result.nextTarget}`;
+  document.getElementById('score-grid').innerHTML = result.scores.map(s => `
+    <div class="score-item">
+      <div class="score-header"><span class="score-name">${s.name}</span><span class="score-val">${s.score}/100</span></div>
+      <div class="score-bar"><div class="score-fill ${fillColor(s.score)}" style="width:${s.score}%"></div></div>
+    </div>`).join('');
+
+  showScreen('screen-result');
+}
+
+function showTasks() {
+  renderTaskList();
+  showScreen('screen-tasks');
+}
+
+// ── Academy ────────────────────────────────────────────────────────────────
+
+function showAcademy() {
+  const container = document.getElementById('academy-modules');
+  container.innerHTML = MOCK_ACADEMY.map(mod => `
+    <div class="module-block">
+      <div class="module-title">${mod.module}</div>
+      ${mod.lessons.map(l => `
+        <div class="lesson-card ${l.status === 'locked' ? 'locked' : ''}"
+             onclick="${l.status !== 'locked' ? `openLesson('${l.id}')` : ''}">
+          <div class="lesson-icon">${l.icon}</div>
+          <div class="lesson-info">
+            <div class="l-title">${l.title}</div>
+            <div class="l-meta">${l.meta}</div>
+          </div>
+          <div class="lesson-status ${l.status === 'done' ? 'ls-done' : l.status === 'locked' ? 'ls-locked' : 'ls-new'}">
+            ${l.status === 'done' ? '✓ Đã học' : l.status === 'locked' ? '🔒' : '● Mới'}
+          </div>
+        </div>`).join('')}
+    </div>`).join('');
+  showScreen('screen-academy');
+}
+
+function openLesson(id) {
+  const lesson = MOCK_ACADEMY.flatMap(m => m.lessons).find(l => l.id === id);
+  if (!lesson) return;
+
+  document.getElementById('lesson-title').textContent = lesson.title;
+  document.getElementById('lesson-meta').innerHTML = `
+    <span class="badge badge-feynman">Học viện</span>
+    <span style="font-size:.78rem;color:var(--muted)">${lesson.meta}</span>
+  `;
+  document.getElementById('lesson-content').innerHTML = lesson.content;
+
+  // Mark as done
+  const l = MOCK_ACADEMY.flatMap(m => m.lessons).find(x => x.id === id);
+  if (l && l.status === 'unread') l.status = 'done';
+
+  showScreen('screen-lesson');
+}
+
+function goToPracticeFromLesson() { showPractice(); }
+
+// ── Practice Hall ───────────────────────────────────────────────────────────
+
+function showPractice() {
+  renderPracticeScreen();
+  showScreen('screen-practice');
+}
+
+function renderPracticeScreen() {
+  // Level & XP
+  const xp = state.totalXP;
+  const levelData = getLevel(xp);
+  const dailyTotalTarget = MOCK_DRILLS.reduce((s, c) => s + c.dailyTarget, 0);
+  const dailyDoneCount = Object.keys(state.dailyDone).length;
+
+  document.getElementById('practice-level-card').innerHTML = `
+    <div class="level-card-top">
+      <span class="level-tag">Viết lách</span>
+      <span class="streak-tag">🔥 ${state.streak} ngày</span>
+    </div>
+    <div class="level-name">${levelData.name}</div>
+    <div class="xp-bar-wrap">
+      <div class="xp-bar-bg"><div class="xp-bar-fill" style="width:${levelData.pct}%"></div></div>
+      <div class="xp-label"><span>${xp} XP</span><span>${levelData.next} XP</span></div>
+    </div>
+    <div class="daily-target">
+      <div class="daily-target-label">Hôm nay — ${dailyDoneCount}/${dailyTotalTarget} bài luyện tập</div>
+      <div class="daily-dots">
+        ${Array.from({length: dailyTotalTarget}, (_, i) => `
+          <div class="daily-dot ${i < dailyDoneCount ? 'done' : 'pending'}">${i < dailyDoneCount ? '✓' : ''}</div>`).join('')}
+        <span class="daily-count">${dailyDoneCount >= dailyTotalTarget ? '🎉 Hoàn thành hôm nay!' : `còn ${dailyTotalTarget - dailyDoneCount} bài`}</span>
+      </div>
+    </div>`;
+
+  // Drill categories
+  document.getElementById('drill-list').innerHTML = MOCK_DRILLS.map(cat => {
+    const catDone = cat.drills.filter(d => state.dailyDone[d.id]).length;
+    return `
+      <div class="drill-category">
+        <div class="drill-cat-header">
+          <span class="drill-cat-name">${cat.category}</span>
+          <span class="drill-cat-count">${catDone}/${cat.dailyTarget} hôm nay</span>
+        </div>
+        ${cat.drills.map(d => {
+          const done = !!state.dailyDone[d.id];
+          return `<div class="drill-item ${done ? 'done' : ''}" onclick="${done ? '' : `openTask(${d.id})`}">
+            <div class="drill-check">${done ? '✓' : ''}</div>
+            <div class="drill-info">
+              <div class="drill-title">${d.title}</div>
+              <div class="drill-sub">${d.sub}</div>
+            </div>
+            <div class="drill-xp">${d.xp}</div>
+          </div>`;
+        }).join('')}
+      </div>`;
+  }).join('');
+}
+
+function getLevel(xp) {
+  const levels = [
+    { min: 0,  max: 10,  name: 'Lv.1 — Người mới bắt đầu' },
+    { min: 10, max: 25,  name: 'Lv.2 — Đang hình thành' },
+    { min: 25, max: 50,  name: 'Lv.3 — Người học nghiêm túc' },
+    { min: 50, max: 100, name: 'Lv.4 — Trung cấp' },
+    { min: 100, max: 200, name: 'Lv.5 — Nâng cao' },
+  ];
+  const lv = levels.find(l => xp >= l.min && xp < l.max) || levels[levels.length - 1];
+  const pct = Math.round(((xp - lv.min) / (lv.max - lv.min)) * 100);
+  return { name: lv.name, pct: Math.min(pct, 100), next: lv.max };
+}
+
+function renderPromptList() {
+  const mode = practiceState.mode;
+  const prompts = mode === 'rewrite' ? MOCK_REWRITE_PROMPTS : MOCK_PROMPTS;
+  const section = document.getElementById('prompt-section');
+
+  if (mode === 'freestyle') {
+    section.style.display = 'none';
+    return;
+  }
+  section.style.display = 'block';
+  document.getElementById('prompt-list').innerHTML = prompts.map((p, i) => `
+    <div class="prompt-item ${practiceState.selectedPrompt === i ? 'selected' : ''}" onclick="selectPrompt(${i}, this)">
+      <div class="p-dot"></div>
+      <span>${p}</span>
+    </div>`).join('');
+}
+
+function selectMode(el) {
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  practiceState.mode = el.dataset.mode;
+  practiceState.selectedPrompt = null;
+  renderPromptList();
+}
+
+function selectPrompt(idx, el) {
+  document.querySelectorAll('.prompt-item').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+  practiceState.selectedPrompt = idx;
+}
+
+function selectTimer(el) {
+  document.querySelectorAll('.timer-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  practiceState.timerMinutes = parseInt(el.dataset.min);
+}
+
+function startPracticeSession() {
+  const mode = practiceState.mode;
+  let promptText = '';
+
+  if (mode === 'freestyle') {
+    promptText = 'Viết tự do — không giới hạn chủ đề. Cứ bắt đầu và để ngón tay dẫn đường.';
+  } else if (mode === 'sprint') {
+    promptText = 'Sprint! Viết càng nhiều từ càng tốt trong thời gian cho phép. Không xóa, không chỉnh — cứ viết.';
+  } else {
+    const prompts = mode === 'rewrite' ? MOCK_REWRITE_PROMPTS : MOCK_PROMPTS;
+    const idx = practiceState.selectedPrompt;
+    promptText = idx !== null ? prompts[idx] : prompts[Math.floor(Math.random() * prompts.length)];
+  }
+
+  document.getElementById('session-prompt').textContent = promptText;
+  document.getElementById('session-textarea').value = '';
+  document.getElementById('session-wc').textContent = '0 từ';
+
+  // Timer
+  clearInterval(practiceState.timerInterval);
+  const mins = mode === 'sprint' && practiceState.timerMinutes === 0 ? 10 : practiceState.timerMinutes;
+  if (mins > 0) {
+    practiceState.secondsLeft = mins * 60;
+    updateTimerDisplay();
+    practiceState.timerInterval = setInterval(() => {
+      practiceState.secondsLeft--;
+      updateTimerDisplay();
+      if (practiceState.secondsLeft <= 0) { clearInterval(practiceState.timerInterval); endPractice(); }
+    }, 1000);
+  } else {
+    document.getElementById('session-timer').textContent = '∞';
+  }
+
+  showScreen('screen-practice-session');
+  setTimeout(() => document.getElementById('session-textarea').focus(), 100);
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(practiceState.secondsLeft / 60).toString().padStart(2, '0');
+  const s = (practiceState.secondsLeft % 60).toString().padStart(2, '0');
+  document.getElementById('session-timer').textContent = `${m}:${s}`;
+}
+
+function onSessionInput() {
+  const text = document.getElementById('session-textarea').value;
+  document.getElementById('session-wc').textContent = `${wordCount(text)} từ`;
+}
+
+function endPractice() {
+  clearInterval(practiceState.timerInterval);
+  showPractice();
+}
+
+// ── Profile ────────────────────────────────────────────────────────────────
+
+function showProfile() {
+  const lv = getLevel(state.totalXP);
+  document.getElementById('progress-level').textContent = lv.name;
+  document.getElementById('profile-name').textContent = state.profile.name;
+  document.getElementById('profile-goal').textContent = state.profile.goal || 'Thuần thục kỹ năng viết lách';
+  document.getElementById('stat-xp').textContent = state.totalXP;
+  document.getElementById('stat-streak').textContent = `🔥 ${state.streak}`;
+  document.getElementById('stat-done').textContent = state.completedTasks.length;
+
+  const entries = Object.entries(state.skillScores);
+  const maxVal = Math.max(...entries.map(([,v]) => v), 1);
+  document.getElementById('progress-skill-grid').innerHTML = entries.map(([name, val]) => {
+    const pct = Math.min(Math.round((val / (maxVal * 1.5)) * 100), 100);
+    return `<div class="score-item">
+      <div class="score-header"><span class="score-name">${name}</span><span class="score-val">${val} XP</span></div>
+      <div class="score-bar"><div class="score-fill ${fillColor(pct)}" style="width:${pct || 4}%"></div></div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('history-list').innerHTML = state.completedTasksData.length === 0
+    ? '<div class="empty">Chưa có bài nào hoàn thành.</div>'
+    : state.completedTasksData.map(h => `
+        <div class="history-item">
+          <span class="badge ${badgeClass(h.type)}">${badgeLabel(h.type)}</span>
+          <span class="hi-title">${h.title}</span>
+          <span class="hi-pts">+${h.pts} XP</span>
+        </div>`).join('');
+
+  showScreen('screen-progress');
+}
+</script>
+</body>
+</html>
