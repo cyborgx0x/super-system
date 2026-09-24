@@ -21,3 +21,7 @@ Dashboard + Django control plane for workspace services.
 
 - SQLite database path defaults to `/app/data/db.sqlite3`.
 - In docker-compose, map `./data/super-system:/app/data` to persist DB on host.
+
+## Tài liệu
+
+Use case và tài liệu sản phẩm của repo này nằm trong kho tài liệu tập trung `cyborgx0x/projects` (riêng tư), khu vực `80-89-small-lines/81-learning/`, mã `81.06`.
